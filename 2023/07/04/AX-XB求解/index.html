@@ -29,7 +29,7 @@
 <meta property="og:description" content="手眼标定中经典问题求解分析">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-07-04T09:02:10.000Z">
-<meta property="article:modified_time" content="2023-07-04T09:16:48.936Z">
+<meta property="article:modified_time" content="2023-07-04T09:57:33.551Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -183,7 +183,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-07-04 17:02:10 / 修改时间：17:16:48" itemprop="dateCreated datePublished" datetime="2023-07-04T17:02:10+08:00">2023-07-04</time>
+      <time title="创建时间：2023-07-04 17:02:10 / 修改时间：17:57:33" itemprop="dateCreated datePublished" datetime="2023-07-04T17:02:10+08:00">2023-07-04</time>
     </span>
 
   
@@ -399,18 +399,26 @@ class="math inline">\(\boldsymbol R\)</span>
 中有详细描述，这里直接给出求解步骤：</p>
 <ol type="1">
 <li><p>找到一系列旋转矩阵 <span class="math inline">\(\boldsymbol A_i,
-\boldsymbol B_i\)</span></p></li>
-<li><p>计算对应的三维向量 <span class="math inline">\(\boldsymbol
-\omega_{A_i} = (\log \boldsymbol A_i)^\lor, \boldsymbol \omega_{B_i} =
-(\log \boldsymbol B_i)^\lor\)</span></p></li>
+\boldsymbol B_i\)</span>，计算对应的三维向量 <span
+class="math inline">\(\boldsymbol \omega_{A_i} = (\log \boldsymbol
+A_i)^\lor, \boldsymbol \omega_{B_i} = (\log \boldsymbol
+B_i)^\lor\)</span></p></li>
+<li><p>根据权重，计算等效中心 <span
+class="math inline">\(\overline{\boldsymbol{\omega}}_{\boldsymbol{A}} =
+\frac{\sum_{i = 1}^n w_i \boldsymbol{\omega}_{\boldsymbol{A}_i}}{\sum_{i
+= 1}^n w_i}, \overline{\boldsymbol{\omega}}_{\boldsymbol{B}} =
+\frac{\sum_{i = 1}^n w_i \boldsymbol{\omega}_{\boldsymbol{B}_i}}{\sum_{i
+= 1}^n w_i}\)</span></p></li>
 <li><p>对协方差矩阵 <span class="math inline">\(\boldsymbol
 \Sigma\)</span> 进行SVD分解 <span class="math inline">\(\boldsymbol
 \Sigma = \boldsymbol U \boldsymbol \Lambda \boldsymbol
 V^T\)</span>，其中协方差矩阵 <span class="math inline">\(\boldsymbol
-\Sigma\)</span> 为 <span class="math display">\[\boldsymbol \Sigma =
+\Sigma\)</span> 为 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{\Sigma} =&amp;
 \begin{bmatrix}
-\boldsymbol \omega_{\boldsymbol B_1} &amp; \cdots &amp; \boldsymbol
-\omega_{\boldsymbol B_n}
+\hat{\boldsymbol{\omega}}_{\boldsymbol{B}_1} &amp; \cdots &amp;
+\hat{\boldsymbol{\omega}}_{\boldsymbol{B}_n}
 \end{bmatrix}
 \begin{bmatrix}
 w_1 &amp; 0 &amp; \cdots &amp; 0 \\
@@ -419,10 +427,19 @@ w_1 &amp; 0 &amp; \cdots &amp; 0 \\
 0 &amp; 0 &amp; \cdots &amp; w_n
 \end{bmatrix}
 \begin{bmatrix}
-\boldsymbol \omega_{\boldsymbol A_1}^T \\
+\hat{\boldsymbol{\omega}}_{\boldsymbol{A}_1}^T \\
 \vdots \\
-\boldsymbol \omega_{\boldsymbol A_n}^T
-\end{bmatrix}\]</span></p></li>
+\hat{\boldsymbol{\omega}}_{\boldsymbol{A}_n}^T
+\end{bmatrix}\\
+=&amp;\sum_{i = 1}^n \omega_i
+\hat{\boldsymbol{\omega}}_{\boldsymbol{B}_i}\hat{\boldsymbol{\omega}}_{\boldsymbol{A}_i}^T
+=\sum_{i = 1}^n \omega_i
+\boldsymbol{\omega}_{\boldsymbol{B}_i}\boldsymbol{\omega}_{\boldsymbol{A}_i}^T
+-
+\overline{\boldsymbol{\omega}}_{\boldsymbol{B}}\overline{\boldsymbol{\omega}}_{\boldsymbol{A}}^T\sum_{i
+= 1}^n \omega_i
+\end{aligned}
+\]</span></p></li>
 <li><p>求解得到旋转矩阵 <span class="math inline">\(\boldsymbol X^* =
 \boldsymbol V \begin{bmatrix} 1 &amp; 0 &amp; \cdots &amp; 0 \\ 0 &amp;
 1 &amp; \cdots &amp; 0 \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots
