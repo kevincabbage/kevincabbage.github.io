@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"kevincabbage.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="对于图像滤波方法的梳理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像滤波（Image Denoising）">
+<meta property="og:url" content="http://kevincabbage.github.io/2023/07/03/%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2/index.html">
+<meta property="og:site_name" content="大白菜的博客">
+<meta property="og:description" content="对于图像滤波方法的梳理">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-03T15:13:19.000Z">
+<meta property="article:modified_time" content="2023-07-04T01:23:28.113Z">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://kevincabbage.github.io/2023/07/03/%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://kevincabbage.github.io/2023/07/03/%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2/","path":"2023/07/03/图像滤波/","title":"图像滤波（Image Denoising）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>图像滤波（Image Denoising） | 大白菜的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">大白菜的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">人生哪能多如意，万事只求半称心</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://kevincabbage.github.io/2023/07/03/%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大白菜的博客">
+      <meta itemprop="description" content="人生哪能多如意，万事只求半称心">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="图像滤波（Image Denoising） | 大白菜的博客">
+      <meta itemprop="description" content="对于图像滤波方法的梳理">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          图像滤波（Image Denoising）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-03 23:13:19" itemprop="dateCreated datePublished" datetime="2023-07-03T23:13:19+08:00">2023-07-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-04 09:23:28" itemprop="dateModified" datetime="2023-07-04T09:23:28+08:00">2023-07-04</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">对于图像滤波方法的梳理</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>在讨论所有问题之前，首先要对滤波这个问题进行良好的数学建模，一般来讲光学图像滤波都会采用如下的模型
+<span class="math display">\[
+y_j = z(\boldsymbol x_j) + e \quad j = 1,2,\cdots
+\]</span></p>
+<p>其中 <span class="math inline">\(\boldsymbol x_j\)</span>
+代表了空间位置信息，<span class="math inline">\(y_j=y(\boldsymbol
+x_j)\)</span> 代表了对应 <span class="math inline">\(\boldsymbol
+x_j\)</span> 位置上的观察到的像素值信息，<span
+class="math inline">\(z_j=z(\boldsymbol x_j)\)</span> 代表了对应 <span
+class="math inline">\(\boldsymbol x_j\)</span>
+位置上真实的像素值信息，是需要求解的对象，常常被称为ground truth，<span
+class="math inline">\(e\)</span> 是均值为0的随机噪声。</p>
+<p>如果对同一目标 <span class="math inline">\(z_j\)</span>
+进行多次观测，为了从这一系列观测到的值 <span
+class="math inline">\(\boldsymbol y = [y_1, y_2, \cdots, y_N]^T\)</span>
+中恢复出真实的信号，根据贝叶斯的理论框架，如果已知独立同分布的噪声 <span
+class="math inline">\(e\)</span> 的概率密度函数 <span
+class="math inline">\(p(e)\)</span>，有表达式 <span
+class="math display">\[
+p(z_j|\boldsymbol y) = \frac{p(\boldsymbol y|z_j)p(z_j)}{p(\boldsymbol
+y)}\propto p(\boldsymbol y|z_j)p(z_j)
+\]</span></p>
+<p>滤波问题就是在求解如下的方程 <span class="math display">\[
+\hat z_j = \arg\mathop{\max}_{z_j} p(z_j | \boldsymbol y)
+\]</span></p>
+<p>在均匀先验 <span class="math inline">\(p(z_j) = \text{const}\)</span>
+的假设下，如果 <span class="math inline">\(e\)</span> 是零均值高斯白噪声
+<span class="math inline">\(\mathcal{N}(0, \sigma^2 \boldsymbol
+I)\)</span>，存在如下的表达式 <span class="math display">\[
+\begin{aligned}\hat z_j=&amp; \arg\mathop{\max}_{z_j} p(z_j |
+\boldsymbol y)= \arg\mathop{\max}_{z_j} p(\boldsymbol y |
+z_j)p(z_j)\\=&amp; \arg\mathop{\max}_{z_j}
+e^{-\frac{1}{2\sigma^2}(\boldsymbol y - z_j \boldsymbol 1)^T
+(\boldsymbol y - z_j \boldsymbol 1)}= \arg\mathop{\min}_{z_j}
+(\boldsymbol y - z_j \boldsymbol 1)^T (\boldsymbol y - z_j \boldsymbol
+1) \\=&amp; \arg\mathop{\min}_{z_j} \sum_{i=1}^N (y_i -
+z_j)^2\end{aligned}
+\]</span></p>
+<p>很显然，上式的解就是常见的均值滤波器。它建立在对于同一个目标的多次观测的假设基础上。在图像处理中，一般认为空间上临近的像素其相同的可能性大，因此往往在目标点的空间领域内进行均值操作。但是上式的要求是严格的，它要求周围像素点和中心像素点拥有相同的真值。可以想象，这种方法在匀质区域上拥有较好的效果，事实上它是匀质区域在最小方差无偏意义上最好的滤波器，达到了该问题的克拉美罗界。对于非匀质区域，周围像素点不再和中心像素点保持绝对一致，该滤波器无偏差地滤掉了属于信号的高频信息（比如边缘信息），引起了边缘模糊等现象。因此后来引入了拥有权重的滤波器，对这些周围领域像素点赋予不同的权重，和中心像素点越相似的权重越大，越不相似的权重越小。这些滤波器可以统一地用下面的式子来表达
+<span class="math display">\[
+\hat z_j= \arg\mathop{\min}_{z_j} \sum_{i=1}^N (y_i - z_j)^2
+K(\boldsymbol x_i, \boldsymbol x_j, y_i, y_j)
+\]</span></p>
+<p>其中的权重 <span class="math inline">\(K(\boldsymbol x_i, \boldsymbol
+x_j, y_i, y_j)\)</span>
+是一个对称的正值的函数，它代表了像素之间的相似性和距离。很多滤波算法都可以用上式来表达，它们之间的区别就在于这个权重函数
+<span class="math inline">\(K\)</span>
+的不同。前面的均值滤波器也是其中的一种特殊情况，其中 <span
+class="math inline">\(K(\boldsymbol x_i, \boldsymbol x_j, y_i, y_j) =
+\frac{1}{N} = \text{const}\)</span>。此外还有常见的高斯滤波器（Gaussian
+Filter，GF），它把权重函数写成只和位置 <span
+class="math inline">\(\boldsymbol x\)</span>
+相关的函数，认为在空间上距离 <span class="math inline">\(\boldsymbol
+x_j\)</span>
+越近相似度越大，距离越远相似度越小，其中相似度权重和距离的关系采用高斯函数来描述，如果距离度量采用欧氏距离，其权重可以用下式表达
+<span class="math display">\[
+K(\boldsymbol x_i, \boldsymbol x_j, y_i, y_j) = e^{-\frac{||\boldsymbol
+x_i - \boldsymbol x_j||^2}{\sigma_x^2}}
+\]</span></p>
+<p>除了高斯函数之外，还有很多类似的只与空间位置相关的核函数。遗憾的是这样的描述方式只考虑了空间上的关系，缺少了基于内容的修正，因此并没有解决边缘、角点这样的高频信号的模糊问题，因此后来提出了双边滤波器，其权重函数如下式所示
+<span class="math display">\[
+K(\boldsymbol x_i, \boldsymbol x_j, y_i, y_j) = e^{-\frac{||\boldsymbol
+x_i - \boldsymbol x_j||^2}{\sigma_x^2}-\frac{||y_i -
+y_j||^2}{\sigma_y^2}}
+\]</span></p>
+<p>这种双边滤波器考虑到了像素值之间的相似程度，对于含有边缘的图像能够起到一定的保边作用。但是双边滤波器对于低信噪比下的图像，性能会恶化。这是因为噪声的干扰，处于同一边的像素点之间的相似程度也会很低。其根本原因在于位置
+<span class="math inline">\(\boldsymbol x\)</span>
+的值是精确的，但是像素 <span class="math inline">\(y\)</span>
+的值是近似的，直接采用单个像素的 <span class="math inline">\(y\)</span>
+值会受到噪声的影响，为了增加滤波器对于噪声的抵抗力，需要用周围领域来估计和
+<span class="math inline">\(y\)</span>
+相关的参数，因此后面又有学者提出了局部自适应回归核LARK，其权重核函数如下所示
+<span class="math display">\[
+\begin{aligned}K(\boldsymbol x_i, \boldsymbol x_j, y_i, y_j) =&amp;
+e^{-(\boldsymbol x_i - \boldsymbol x_j)^T \boldsymbol C_i (\boldsymbol
+x_i - \boldsymbol x_j)} \\\boldsymbol C_i =&amp;  \sum_{y_k \in
+window}\begin{bmatrix}\left(\frac{\partial y_k}{\partial x_1}\right)^2
+&amp; \frac{\partial y_k}{\partial x_1}\frac{\partial y_k}{\partial x_2}
+\\\frac{\partial y_k}{\partial x_1}\frac{\partial y_k}{\partial x_2}
+&amp; \left(\frac{\partial y_k}{\partial x_2}\right)^2
+\\\end{bmatrix}\end{aligned}
+\]</span></p>
+<p>这种方法首先估计窗内每个点的梯度协方差矩阵，然后求平均，这一步的本质就是在求解窗内边缘的方向，以便于制定和图像结构相关的滤波器核函数。相比于前面的均匀滤波和高斯滤波，LARK权重系数在每个方向上下降的速度是不一样的，和梯度的大小成正相关，因此它考虑了图像本身的结构信息。相比于双边滤波器，LARK利用周围领域来估计和
+<span class="math inline">\(y\)</span>
+相关的系数，抗噪声能力更强。LARK可以认为是一种从数据中学习鲁棒的结构探针的方法。</p>
+<p>为了进一步提升性能，需要将更多的相似像素加入到这个估计式子中来，因此有必要将周围领域扩大到更大的范围，比如说全图，这就是非邻域平均算法（Non-Local
+Mean,NLM）的出发点。可以用下面的式子来表达 <span class="math display">\[
+K(\boldsymbol x_i, \boldsymbol x_j, y_i, y_j) = \lim\limits_{\sigma_x
+\to \infty} e^{-\frac{||\boldsymbol x_i - \boldsymbol
+x_j||^2}{\sigma_x^2}-\frac{||y_i - y_j||^2}{\sigma_y^2}} =
+e^{-\frac{||y_i - y_j||^2}{\sigma_y^2}}
+\]</span></p>
+<p>它完全忽视了距离对于权重的影响，只考虑图像像素和结构之间的相似性，这样可以把更多的属于同一目标的像素点加入到计算中来，进一步降低估计结果的方差，提高泛化性能。遗憾的是如果严格按照公式来，对每一点都要做这样的全图相似性计算操作，其计算复杂度急剧上升，因此在应用中往往还是采用local的邻域方案，只不过是一个相对更大的邻域而已。如果Non-Local算法只根据单个像素的观测值
+<span class="math inline">\(y\)</span>
+来计算权重，同样对于低信噪比下的结果会造成性能恶化。一般采用基于小块的Non-Local算法来增强算法的鲁棒性。但是对于那些不具有自相似性的图像，会过度平滑复杂不规则结构。</p>
+<p>如果对式用矩阵的方式来描述，那么可以写成 <span
+class="math display">\[
+\begin{aligned}\hat z_j=&amp; \arg\mathop{\min}_{z_j} (\boldsymbol y -
+z_j \boldsymbol 1)^T\begin{bmatrix}K(\boldsymbol x_1, \boldsymbol x_j,
+y_1, y_j) &amp; &amp; &amp; \\&amp; K(\boldsymbol x_2, \boldsymbol x_j,
+y_2, y_j) &amp; &amp; \\&amp; &amp; \ddots &amp; \\&amp; &amp; &amp;
+K(\boldsymbol x_N, \boldsymbol x_j, y_N, y_j)\end{bmatrix}(\boldsymbol y
+- z_j \boldsymbol 1) \\=&amp; \arg\mathop{\min}_{z_j} (\boldsymbol y -
+z_j \boldsymbol 1)^T \boldsymbol K_j (\boldsymbol y - z_j \boldsymbol
+1)\end{aligned}
+\]</span></p>
+<p>上面方程的闭式解是 <span class="math display">\[
+\hat z_j = (\boldsymbol 1^T \boldsymbol K_j \boldsymbol 1)^{-1}
+\boldsymbol 1^T \boldsymbol K_j \boldsymbol y = \boldsymbol w_j^T
+\boldsymbol y
+\]</span></p>
+<p>上式是对单点滤波的闭式解，如果是对整个区域里的点滤波则可以写成 <span
+class="math display">\[
+\boldsymbol{\hat z} =\begin{bmatrix}\boldsymbol w_1^T \\\boldsymbol
+w_2^T \\\vdots \\\boldsymbol w_n^T\end{bmatrix} \boldsymbol y=
+\boldsymbol W^T \boldsymbol y
+\]</span></p>
+<p>可以看到前面这些空域方法的核心就是权重参数 <span
+class="math inline">\(\boldsymbol
+W\)</span>，虽然不同方法得到的参数不一样，但它们都是周围邻域点的函数。如果对式稍作变换可以得到
+<span class="math display">\[
+\boldsymbol{\hat z} = \boldsymbol D (\boldsymbol D^T\boldsymbol W^T
+\boldsymbol D) \boldsymbol D^T \boldsymbol y= \boldsymbol D \boldsymbol
+W
+\]</span></p>
+<p>这就是变换域滤波算法，先把信号 <span
+class="math inline">\(\boldsymbol y\)</span> 通过正交矩阵 <span
+class="math inline">\(\boldsymbol D^T\)</span>
+变换到变换域上，然后在变换域通过矩阵 <span
+class="math inline">\(\boldsymbol W\)</span> 进行滤波，再通过正交矩阵
+<span class="math inline">\(\boldsymbol D\)</span>
+变换到原域上。常用的变换有傅里叶变换、小波变换、DCT变换等等。</p>
+<p>前面提到的算法都是从式 <span class="math inline">\(p(z_j|\boldsymbol
+y)\propto p(\boldsymbol y|z_j)p(z_j)\)</span>
+出发的，它们有一个共同的特性，就是都在均匀先验 <span
+class="math inline">\(p(z_j) = \text{const}\)</span>
+的假设下。这种假设认为滤波的图像的像素值均匀分布在整个色彩空间，而事实上，实际中的图像在整个色彩空间是有一定偏好的。如果利用这种先验信息，那么可以得到更好的结果。
+<span class="math display">\[
+\begin{aligned}\boldsymbol{\hat z} =&amp; \arg\mathop{\max}_{\boldsymbol
+z} p(\boldsymbol y | \boldsymbol z) p(\boldsymbol z) \\=&amp;
+\arg\mathop{\max}_{\boldsymbol z} e^{-\frac{1}{2\sigma^2}||\boldsymbol y
+- \boldsymbol z||^2} e^{\ln p(\boldsymbol z)} \\=&amp;
+\arg\mathop{\min}_{\boldsymbol z} ||\boldsymbol y - \boldsymbol z||^2 +
+\lambda \Phi(\boldsymbol z)\end{aligned}
+\]</span></p>
+<p>这种先验包括非常流行的稀疏先验假设,稀疏先验假设认为任意一个图像 <span
+class="math inline">\(\boldsymbol z\)</span> 都可以用一个完备的字典
+<span class="math inline">\(\boldsymbol D\)</span>
+稀疏表达，它的先验就是字典表达的稀疏性，也被称为稀疏编码（Sparse
+Coding，SC），如下式所示 <span class="math display">\[
+\begin{aligned}\boldsymbol{\hat x} =&amp; \arg\mathop{\min}_{\boldsymbol
+x} ||\boldsymbol y - \boldsymbol D \boldsymbol x||^2 + \lambda
+||\boldsymbol x||_0 \\\boldsymbol{\hat z} =&amp; \boldsymbol D
+\boldsymbol{\hat x}\end{aligned}
+\]</span></p>
+<p>其中 <span class="math inline">\(\boldsymbol x\)</span> 是图像 <span
+class="math inline">\(\boldsymbol z\)</span> 在字典 <span
+class="math inline">\(\boldsymbol D\)</span> 下的表达。</p>
+<p>还有一种很流行的先验是变分（Total
+Variation，TV）约束先验。这种先验的想法来源于Rudin在文献中提到的一个经验性的观察：含有噪声的图像比没有噪声的图片，其变分绝对值之和要大很多。因此这可以作为一种信息对优化加以约束。具体表达式如下
+<span class="math display">\[
+\boldsymbol{\hat z} = \arg\mathop{\min}_{\boldsymbol z} ||\boldsymbol y
+- \boldsymbol z||^2 + \lambda ||\triangledown \boldsymbol z||_1
+\]</span></p>
+<p>在这些约束的作用下，使得滤波器更加倾向于修复符合先验的图像（概率大的z），而不再是在全空间修复，对于特定问题可以超越一般的算法，先验越符合实际，效果就越好。</p>
+<p>注意到前面的这些方法，往往需要真值的一些特征参数，包括像素值、边缘主方向等等。这些参数由于噪声的干扰，本身也变成了一个随机变量。前面已经出现了用一个小patch来估计这些参数的方法，大大改善了估计的准确度。除此以外，还出现了循环方法，这些循环包括串联滤波器，使得下一次的参数基于上一次滤波之后的更准确的结果，以达到比上一次更加准确的最终估计值（偏差不断变大，方差不断变小），也包括残差滤波，不断挖掘被滤掉部分中的高频信息叠加到最后的结果中（偏差不断变小，方差不断变大）。它们不断叠加的结果就是方差和偏差之间的权衡，在均方误差（Mean
+Squared
+Error，MSE）最小的情况下，线性滤波器通过最优迭代最终演变成维纳滤波，达到线性均方最小误差问题（Linear
+Minimun Mean Square Error，LMMSE）的克拉美罗界。</p>
+<p>文献Image Denoising by Sparse 3-D Transform-Domain Collaborative
+Filtering提出了一种新的滤波方法BM3D，它参考了NLM在很大的领域内搜索相似块，并且在变换域进行滤波，同时考虑了空间的位置关系和块之间的特征相似性，并且采用了迭代的方法。使得下一次得到的维纳滤波器参数估计更加准确，达到了经典滤波算法的state
+of art。该方法非常复杂，以至于没法简单的用数学表达式来表达权重参数 <span
+class="math inline">\(\boldsymbol
+W\)</span>。具体的细节可以参考文献。</p>
+<p>这些传统方法都有一个很大的缺陷，就是需要事先得知图像的噪声强度或者信噪比来估算其中的某些参数，这给实际应用带来了很大的限制。有时候甚至在同一张图像上的噪声强度并不是均匀的，而是有差别的，而这些方法都不能应对这样的情况。更重要的是，它们本身就是浅层的神经网络，表达能力有限。因此后面出现了采用神经网络的方法。</p>
+<p>未完待续……</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/23/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-chevron-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/04/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/" rel="next" title="半监督学习（Semi Supervised Learning）">
+                  半监督学习（Semi Supervised Learning） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder"></span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/kevincabbage" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"kevincabbage.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="配置个人神经网络训练电脑的一番折腾总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习电脑配置及安装">
+<meta property="og:url" content="http://kevincabbage.github.io/2023/07/04/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%B5%E8%84%91%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="大白菜的博客">
+<meta property="og:description" content="配置个人神经网络训练电脑的一番折腾总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-04T03:19:58.000Z">
+<meta property="article:modified_time" content="2023-07-04T07:16:04.895Z">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://kevincabbage.github.io/2023/07/04/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%B5%E8%84%91%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%AE%89%E8%A3%85/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://kevincabbage.github.io/2023/07/04/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%B5%E8%84%91%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%AE%89%E8%A3%85/","path":"2023/07/04/深度学习电脑配置及安装/","title":"深度学习电脑配置及安装"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深度学习电脑配置及安装 | 大白菜的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">大白菜的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E8%B4%AD%E4%B9%B0"><span class="nav-number">1.</span> <span class="nav-text">硬件购买</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">软件安装</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">人生哪能多如意，万事只求半称心</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://kevincabbage.github.io/2023/07/04/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%B5%E8%84%91%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大白菜的博客">
+      <meta itemprop="description" content="人生哪能多如意，万事只求半称心">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="深度学习电脑配置及安装 | 大白菜的博客">
+      <meta itemprop="description" content="配置个人神经网络训练电脑的一番折腾总结">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习电脑配置及安装
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-07-04 11:19:58 / 修改时间：15:16:04" itemprop="dateCreated datePublished" datetime="2023-07-04T11:19:58+08:00">2023-07-04</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">配置个人神经网络训练电脑的一番折腾总结</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>最近想给深度学习配置一台服务器，查了很多资料，做了不少功课，前前后后花了不少时间，总结出来，希望后人避免走坑：</p>
+<h2 id="硬件购买">硬件购买</h2>
+<ol type="1">
+<li><p>CPU：购买需要注意和主板接口类型匹配，如果很在意 GPU 是否工作在
+PCIE x16 状态下，尤其是多块 GPU 都要求工作在 PCIE x16
+状态下，那么需要注意主板是否支持，CPU
+是否支持，这些消息都可以从主板官网（注意是官网，不是京东什么的信息说明）中查到，嫌麻烦或者查不到就问客服。一般来说家用主板
+Z**，B**之类的一块卡工作在PCIE x16，两块卡就工作在 PCIE
+x8，三块及以上就工作在 PCIE x4 上了，尽量避免显卡工作在 PCIE x4
+状态上，会影响内存到显存的数据传输速度。</p></li>
+<li><p>主板：同 CPU，要注意和 CPU 的匹配、以及对于内存容量的支持和 PCIE
+x16 的支持，一般来说，多块 GPU 都工作在 PCIE x16 状态下，主板采用的
+Intel 芯片都是 X** 开头的，理所当然支持的 CPU 也是 X**
+型号的，这种主板也被称为服务器主板，一般都有 8
+条内存插槽。主板这里唯一值得一提的是，深度学习训练多块 GPU
+显卡之间不能靠得太近，除非是上显卡水冷，否则散热是个很大的问题，显卡太热就会降频，导致你买的好显卡没有体现出价值，还不如买个烂显卡。为此一般插显卡的时候遵循——隔着插，也就是说隔一条
+PCIE 插下一块显卡，这对主板提出了更高的要求，双卡工作就需要有 4 个 PCIE
+插槽，4 卡工作就要求有 8 个 PCIE 插槽，而且这样插显卡还需要满足 GPU
+都工作在PCIE x16
+的状态下，所以一定要仔细看官网的主板说明，不能偷懒。</p></li>
+<li><p>电源：电源工作会有工作曲线，一般来说电源工作在最大功率一半的时候，效率最高，这意味着你花的每一分电费都用在了训练上，而不是逸散掉了，这样最好，比如你算了下需要
+100W 的功率，那你最好买 200W 的电源。一般CPU功率在 100W 左右，GPU在 300W
+左右，这样双卡功率就是 700W，买个 1300W 电源挺好，1000W
+电源也是OK的，但不能更低了，除非你单卡。如果是 4 卡，建议直接
+1600W。电源选择注意是否金牌，是否模组。对于那些 10
+年及以上质保的，不要犹豫，这年头都给你 10
+年质保了，你还有什么不满意的，价格上来说 1 元钱
+1W，低于这个价格的就不要碰了，这里推荐振华。</p></li>
+<li><p>GPU：穷鬼推荐 1080Ti，现在只有二手的了。其他人推荐 RTX
+Titan，显存大。2 块 RTX Titan 让你跑任何网络都游刃有余。</p></li>
+<li><p>内存：一定要比单块 GPU 显存大，建议 32G 起步。</p></li>
+<li><p>硬盘：推荐东芝 P300。</p></li>
+<li><p>散热：DIY
+建议不要水冷，一旦炸了，一切结束，水冷就交给厂商定制，省心省事还有质保，当然价格也贵，你也不用看此攻略了。风冷注意前面提到的显卡隔着插就
+OK 了。还有就是机箱的风道一定要好，前后上三个方向都要有风扇。</p></li>
+<li><p>机箱：尽量大一些，房子大谁都住得舒服，散热也好。除此之外，风道也要好，还要注意机箱大小和风扇尺寸匹配，别装不下了。推荐海盗船
+AIR540，这可是 NVIDIA 服务器同款。</p></li>
+</ol>
+<h2 id="软件安装">软件安装</h2>
+<p>当然是 Linux 系统了，windows 系统由于不支持 python
+多进程，读入数据时没法形成流水线，导致训速度很慢</p>
+<ol type="1">
+<li><p>准备好 ios 文件，（可从<a
+target="_blank" rel="noopener" href="https://ubuntu.com/#download">https://ubuntu.com/#download</a>下载
+，官网地址直接下载 iso 可能会很慢，但是万幸的是官网提供了 torrent
+文件下载，这里可以先下载torrent文件，然后利用百度云盘的离线下载功能来加速）</p></li>
+<li><p>准备好刻录软件，这里以 UltraISO 为例，注意刻录的时候选择 raw
+格式</p></li>
+<li><p>开机进入 bios，选择从 U 盘启动，安装 ubuntu 系统（这里安装 ubuntu
+18.04 LTS）</p></li>
+<li><p>联网, 在 Settings 的 Power 选项中设置 Blank Screen 时间为
+“never”</p></li>
+<li><p>安装 nvidia 显卡驱动</p>
+<p>在 Terminal 搜索可用显卡驱动 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt search nvidia</span><br></pre></td></tr></table></figure></p>
+<p>假设发现最高的版本号为440，不同机器不一样，安装驱动 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install nvidia-440</span><br></pre></td></tr></table></figure></p>
+<p>可能报错，Unable to locate package nvidia-440，此时进入
+Software&amp;Updates, 将 Ubuntu Software 的 Download from 修改为 Main
+server，关闭，选择 Reload，等待源更新，然后重新进入
+Software&amp;Updates，进入 Additional Drivers, 选择非 Nouveau 的那个（
+这里是440 ），Apply Changes, 重启系统</p>
+<p>查看 GPU 情况 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></p></li>
+<li><p>备份及配置源</p>
+<p>首先来个简单的方法</p>
+<p>进入 Software&amp;Updates, 将 Ubuntu Software 的 Download from 修改为
+other --&gt; China --&gt; mirrors.aliyun.com，关闭，选择
+Reload，等待源更新</p>
+<p>更新源，更新软件，执行 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade -y</span><br></pre></td></tr></table></figure></p>
+<p>再来个复杂的方法</p>
+<p>首先来搞清楚 ubuntu 代号，下面是部分 ubuntu
+系统的代号（黑体的形容词部分）：</p>
+<pre><code> 6.06(LTS) dapper Drake (整洁的公鸭)
+ 8.04(LTS) hardy Heron (耐寒的苍鹭)
+ 10.04(LTS) lucid Lynx (清醒的猞猁)
+ 12.04(LTS) precise Pangolin (精准的穿山甲)
+ 14.04(LTS) trusty Tahr (可靠的塔尔羊)
+ 16.04(LTS) xenial Xerus (好客的非洲地松鼠)
+ 18.04(LTS) bionic Beaver（仿生海狸）
+ 20.04(LTS) focal Fossa（专注的马达加斯加长尾狸猫）
+ ……</code></pre>
+<p>可以用以下命令来看当前系统代号，代号将会显示在Codename后面 ——
+Codename：***** <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsb_release -a</span><br></pre></td></tr></table></figure></p>
+<p>备份原来的源 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">cp</span> /etc/apt/sources.list /etc/apt/sources.list.bak</span><br></pre></td></tr></table></figure></p>
+<p>打开 souces.list <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/apt/sources.list</span><br></pre></td></tr></table></figure></p>
+<p>然后将下面模板中的 Codename 换成你的代号，比如 20.04 LTS 就是
+focal</p>
+<pre><code> deb http://mirrors.aliyun.com/ubuntu/ Codename main restricted universe multiverse
+ deb http://mirrors.aliyun.com/ubuntu/ Codename-updates main restricted universe multiverse
+ deb http://mirrors.aliyun.com/ubuntu/ Codename-security main restricted universe multiverse
+ deb http://mirrors.aliyun.com/ubuntu/ Codename-proposed main restricted universe multiverse
+ deb http://mirrors.aliyun.com/ubuntu/ Codename-backports main restricted universe multiverse
+ deb-src http://mirrors.aliyun.com/ubuntu/ Codename main restricted universe multiverse
+ deb-src http://mirrors.aliyun.com/ubuntu/ Codename-updates main restricted universe multiverse
+ deb-src http://mirrors.aliyun.com/ubuntu/ Codename-security main restricted universe multiverse
+ deb-src http://mirrors.aliyun.com/ubuntu/ Codename-proposed main restricted universe multiverse
+ deb-src http://mirrors.aliyun.com/ubuntu/ Codename-backports main restricted universe multiverse</code></pre>
+<p>然后粘贴到刚才的 /etc/apt/sources.list 里</p>
+<p>更新源，更新软件，执行 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade -y</span><br></pre></td></tr></table></figure></p></li>
+<li><p>安装 docker</p>
+<p>可参考https://www.runoob.com/docker/ubuntu-docker-install.html</p>
+<p>这里使用官方脚本自动安装 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl</span><br><span class="line">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun</span><br></pre></td></tr></table></figure></p>
+<p>安装成功后可以跑通下面命令: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure></p>
+<p>给用户加 docker 权限（目的是为了在 docker 中运行的时候不需要添加
+sudo）</p>
+<p>添加 docker 用户组 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br></pre></td></tr></table></figure></p>
+<p>修改组密码，可选 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gpasswd docker</span><br></pre></td></tr></table></figure></p>
+<p>将登陆用户加入到 docker 用户组中 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo gpasswd -a <span class="variable">$USER1</span> docker</span><br><span class="line">sudo gpasswd -a <span class="variable">$USER2</span> docker</span><br><span class="line">...</span><br></pre></td></tr></table></figure> 假如用户是
+jk，那么上面的命令是: sudo gpasswd -a jk docker</p>
+<p>重启 docker 服务 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service docker restart</span><br></pre></td></tr></table></figure></p>
+<p>更新用户组 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">newgrp docker</span><br></pre></td></tr></table></figure></p>
+<p>和前面类似的，安装成功后可以跑通下面命令: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure></p>
+<p>安装 NVIDIA docker <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \</span><br><span class="line">sudo apt-key add -</span><br><span class="line">distribution=$(. /etc/os-release;<span class="built_in">echo</span> $ID<span class="variable">$VERSION_ID</span>)</span><br><span class="line">curl -s -L https://nvidia.github.io/nvidia-container-runtime/<span class="variable">$distribution</span>/nvidia-container-runtime.list | \</span><br><span class="line">sudo <span class="built_in">tee</span> /etc/apt/sources.list.d/nvidia-container-runtime.list</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install nvidia-container-runtime -y</span><br></pre></td></tr></table></figure></p>
+<p>运行测试 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -it --<span class="built_in">rm</span> --gpus all ubuntu nvidia-smi</span><br></pre></td></tr></table></figure></p>
+<p>安装 docker 官方中国区加速器</p>
+<p>开发者需要开通阿里开发者帐户，再使用阿里的加速服务</p>
+<p>登录后阿里开发者帐户后，<a
+target="_blank" rel="noopener" href="https://cr.console.aliyun.com/undefined/instances/mirrors">https://cr.console.aliyun.com/undefined/instances/mirrors</a>
+中查看你的您的专属加速器地址
+“https://yourcode.mirror.aliyuncs.com”，其中 yourcode
+是每个人自己帐户的加速前缀</p>
+<p>打开 /etc/docker/daemon.json 文件 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chmod</span> 777 /etc/docker/daemon.json（修改只读属性）</span><br><span class="line">gedit /etc/docker/daemon.json</span><br></pre></td></tr></table></figure></p>
+<p>向其中添加内容 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;registry-mirrors&quot;: [&quot;https://yourcode.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br><span class="line">sudo systemctl daemon-reload</span><br></pre></td></tr></table></figure></p>
+<p>尝试下载镜像 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull anibali/pytorch</span><br><span class="line">sudo docker pull pytorch/pytorch:1.6.0-cuda10.1-cudnn7-runtime</span><br></pre></td></tr></table></figure></p></li>
+<li><p>安装输入法：</p>
+<p>进入 Settings，进入 Region&amp;Language，单击 Manage Installed
+Languages 等待自动更新，更改 Keyboard input method system 为 IBus</p>
+<p>若出现个别软件包****版本不匹配，可执行以下命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt remove ****（先删除）</span><br><span class="line">sudo apt install ****（再重新安装）</span><br></pre></td></tr></table></figure></p>
+<p>打开 Terminal，执行 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ibus-pinyin -y</span><br></pre></td></tr></table></figure></p>
+<p>重启系统</p>
+<p>进行输入法设置</p>
+<p>进入 Settings，进入 Region&amp;Language，在 Input Sources 里面添加
+Chinese(Intelligent Pinyin)</p>
+<p>切换输入法设置</p>
+<p>进入 Settings，进入 Devices，进入 Keyboard，Typing
+选项，默认为按住win再按空格</p></li>
+<li><p>突破内网限制</p>
+<p>可以考虑租个有公网 IP 的云服务器，然后用SSH反向映射来搞</p>
+<p>这里选择通过第三方软件远程连接，下载软件向日葵https://sunlogin.oray.com/download/</p>
+<p>正常安装只需要双击就可以了，可能会报错说依赖的库不存在，如果用命令行安装，报错可能会更加明显，命令行安装方法如下：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i SunloginClient-10.1.1.38139_amd64.deb</span><br></pre></td></tr></table></figure></p>
+<p>20.04 会报错是缺少库 libwebkitgtk-3.0-0，尝试命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libwebkitgtk-3.0-0</span><br></pre></td></tr></table></figure></p>
+<p>如果失败，需要手动下载 libwebkitgtk-3.0-0
+及其相关依赖，具体网址可以查看<a
+target="_blank" rel="noopener" href="https://pkgs.org/download/libwebkitgtk-3.0-0">https://pkgs.org/download/libwebkitgtk-3.0-0</a>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">wget -c http://ftp.br.debian.org/debian/pool/main/i/icu/libicu57_57.1-6+deb9u4_amd64.deb</span><br><span class="line">wget -c http://ftp.br.debian.org/debian/pool/main/w/webkitgtk/libjavascriptcoregtk-3.0-0_2.4.11-3_amd64.deb</span><br><span class="line">wget -c http://ftp.br.debian.org/debian/pool/main/libj/libjpeg-turbo/libjpeg62-turbo_2.0.5-1.1_amd64.deb</span><br><span class="line">wget -c http://ftp.br.debian.org/debian/pool/main/w/webkitgtk/libwebkitgtk-3.0-0_2.4.11-3_amd64.deb</span><br><span class="line"></span><br><span class="line">sudo dpkg -i libicu57_57.1-6+deb9u4_amd64.deb</span><br><span class="line">sudo dpkg -i libjavascriptcoregtk-3.0-0_2.4.11-3_amd64.deb</span><br><span class="line">sudo dpkg -i libjpeg62-turbo_2.0.5-1.1_amd64.deb</span><br><span class="line">sudo apt install libenchant1c2a libegl1-mesa</span><br><span class="line">sudo dpkg -i libwebkitgtk-3.0-0_2.4.11-3_amd64.deb</span><br></pre></td></tr></table></figure></p>
+<p>也可以一次性安装如下所示 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget -c http://ftp.br.debian.org/debian/pool/main/i/icu/libicu57_57.1-6+deb9u4_amd64.deb http://ftp.br.debian.org/debian/pool/main/w/webkitgtk/libjavascriptcoregtk-3.0-0_2.4.11-3_amd64.deb http://ftp.br.debian.org/debian/pool/main/libj/libjpeg-turbo/libjpeg62-turbo_2.0.5-1.1_amd64.deb http://ftp.br.debian.org/debian/pool/main/w/webkitgtk/libwebkitgtk-3.0-0_2.4.11-3_amd64.deb</span><br><span class="line"></span><br><span class="line">sudo dpkg -i libicu57_57.1-6+deb9u4_amd64.deb libjavascriptcoregtk-3.0-0_2.4.11-3_amd64.deb libjpeg62-turbo_2.0.5-1.1_amd64.deb</span><br><span class="line">sudo apt install libenchant1c2a libegl1-mesa</span><br><span class="line">sudo dpkg -i libwebkitgtk-3.0-0_2.4.11-3_amd64.deb</span><br></pre></td></tr></table></figure></p>
+<p>可以正常安装向日葵了，重复前面的步骤，双击或者命令行即可</p>
+<p>除此之外需要注意，向日葵在远程的时候可能会修改显示配置，导致与服务器端不一致，一般安装完
+ubuntu 系统使用的是 GNOME 显示管理器 gdm3，由于该管理器相对严苛，因此当
+win 主机远程连接的时候会出现 “连接已断开”
+的情况，遇到这种情况需要安装新的显示管理器 lightdm，命令如下
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install lightdm -y</span><br></pre></td></tr></table></figure></p>
+<p>然后重启电脑</p>
+<p>个人电脑到这里就结束了，后面是非docker下运行以及多人使用的简单服务器需要增加的步骤</p></li>
+<li><p>安装 CUDA</p>
+<p>CUDA 下载网址：<a
+target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads">https://developer.nvidia.com/cuda-downloads</a></p>
+<p>选择 runfile(local) 进行下载至 Home 目录</p>
+<p>首先需要确保 gcc, make, libc6-dev 已安装，若未安装，在 Terminal
+中执行 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install gcc make libc6-dev</span><br></pre></td></tr></table></figure></p>
+<p>安装的时候注意如果已经安装完显卡驱动，只需要安装 CUDA Toolkit
+<em>.</em> 就行了，也就是只有该项前面是 [X]，其他选项都用用回车去掉 X
+变成 [ ]</p>
+<p>可能出现安装不了的情况，具体看 cuda-installer.log
+文件，会有提示，如果是 gcc 版本太高，按照以下步骤操作 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt remove gcc-9（删除高版本 gcc，这里是 gcc-9）</span><br><span class="line">sudo apt install gcc-8</span><br></pre></td></tr></table></figure></p>
+<p>装完后进入到 /usr/bin 目录下 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">ln</span> -s gcc-8 gcc（重新链接）</span><br></pre></td></tr></table></figure></p>
+<p>可以通过以下命令查看 gcc 版本 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -v</span><br></pre></td></tr></table></figure></p>
+<p>================== 如果未执行第 5 步 ==================</p>
+<p>由于我们事先未下载显卡驱动，故需要通过 cuda 的 runfile
+来进行显卡驱动的安装</p>
+<p>首先需要编辑文件 blacklist.conf <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/modprobe.d/blacklist.conf</span><br></pre></td></tr></table></figure></p>
+<p>在文件的最后部分插入一下两行内容，禁用 nouveau 开源显卡驱动
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure></p>
+<p>之后更新系统并重启 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br><span class="line">sudo reboot</span><br></pre></td></tr></table></figure></p>
+<p>重启之后验证 nouveau
+是否已经被禁用，若以下命令没有输出信息则说明确实已经禁用了
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep nouveau </span><br></pre></td></tr></table></figure></p>
+<p>切换登录模式为命令行模式 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl set-default multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p>重启电脑 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
+<p>此时会发现图形界面已经消失，当前为命令行模式，输入用户名和密码登录</p>
+<p>Terminal 输入 ls 会看到 Home 目录下之前已经下载好的 runfile</p>
+<p>Terminal 输入 sudo chmod +x
+cuda_10.1.105_418.39_linux.run（按tab键文件名可以自动补全）</p>
+<p>Terminal 输入 sudo sh cuda_10.1.105_418.39_linux.run 进入下载界面</p>
+<p>输入 accept，回车</p>
+<p>由于需要安装显卡驱动，因此所有选项前面均为叉，表示全部安装，切换到
+install，开始自动安装</p>
+<p>安装完毕，此时可以恢复图形界面 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl set-default graphical.target</span><br></pre></td></tr></table></figure></p>
+<p>重启电脑即可</p>
+<p>输入以下命令可以看到显卡信息 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure> ==================
+如果未执行第 5 步 ==================</p>
+<p>之后将 cuda 加入到当前用户的环境变量 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gedit ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<p>在文件的最后添加以下两行 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=/usr/local/cuda/bin<span class="variable">$&#123;PATH:+:<span class="variable">$&#123;PATH&#125;</span>&#125;</span></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/usr/local/cuda/lib64<span class="variable">$&#123;LD_LIBRARY_PATH:+:<span class="variable">$&#123;LD_LIBRARY_PATH&#125;</span>&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>保存文件，回到终端后执行（使环境变量生效） <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure></p></li>
+<li><p>安装 pip3 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3-pip</span><br></pre></td></tr></table></figure></p></li>
+<li><p>安装 pytorch，具体命令可以参考 <a
+target="_blank" rel="noopener" href="https://pytorch.org/">https://pytorch.org/</a>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install torch torchvision</span><br></pre></td></tr></table></figure></p></li>
+<li><p>安装tmux（为了可以断网依然在跑程序，若不用 ssh 连接则忽略此项）
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install tmux</span><br></pre></td></tr></table></figure></p></li>
+<li><p>配置 ssh 服务器端 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install openssh-server -y</span><br></pre></td></tr></table></figure></p></li>
+<li><p>配置远程桌面</p>
+<p>参考网址：<a
+target="_blank" rel="noopener" href="https://www.cnblogs.com/xuliangxing/p/7642650.html">https://www.cnblogs.com/xuliangxing/p/7642650.html</a></p>
+<p>进入 Settings, 进入 Sharing,点击 Screen Sharing，点击 OFF 变成
+ON，点击 Require a password, 设置远程桌面密码</p>
+<p>安装 vncserver <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install xrdp vnc4server xbase-clients</span><br></pre></td></tr></table></figure></p>
+<p>安装dconf-editor <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install dconf-editor</span><br></pre></td></tr></table></figure></p>
+<p>打开 dconf-editor 工具（ 桌面直接搜索 dconf-editor 就能找到 ），</p>
+<p>打开之后，依次展开
+org-&gt;gnome-&gt;desktop-&gt;remote-access，然后取消
+“require-encryption” 的勾选即可。</p></li>
+<li><p>挂载磁盘</p>
+<p>创建目标目录 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">mkdir</span> /media/disk1</span><br><span class="line">sudo <span class="built_in">mkdir</span> /media/disk2</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>并修改这些目录的权限 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chmod</span> -R 777 /media/disk1</span><br><span class="line">sudo <span class="built_in">chmod</span> -R 777 /media/disk2</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>查看各个磁盘的编号（这里假设编号是/dev/sdb1，/dev/sdc1）、类型
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo blkid</span><br></pre></td></tr></table></figure></p>
+<p>打开文件 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/fstab</span><br></pre></td></tr></table></figure></p>
+<p>添加相应的行数 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/dev/sdb1 /media/disk1 ext4 defaults 0 0</span><br><span class="line">/dev/sdc1 /media/disk2 ext4 defaults 0 0</span><br></pre></td></tr></table></figure></p></li>
+<li><p>创建新用户</p>
+<p>创建一般用户执行 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser jk</span><br></pre></td></tr></table></figure></p>
+<p>创建管理员用户执行 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod jk -G sudo</span><br></pre></td></tr></table></figure></p>
+<p>第一个密码是计算机的密码</p>
+<p>第二三个密码是该用户远程访问密码，后面的 Full Name
+等等都可以忽略直接回车</p>
+<p>给用户配置环境变量</p>
+<p>离开当前用户，登陆要配置环境变量的用户 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su -l username（su 代表 switch user，l 代表 login）</span><br></pre></td></tr></table></figure></p>
+<p>打开文件 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gedit ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<p>在文件的最后添加以下两行 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PATH=/usr/local/cuda/bin$&#123;PATH:+:$&#123;PATH&#125;&#125;</span><br><span class="line">export LD_LIBRARY_PATH=/usr/local/cuda/lib64$&#123;LD_LIBRARY_PATH:+:$&#123;LD_LIBRARY_PATH&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>保存文件，回到终端后执行（使环境变量生效） <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure></p></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/04/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/" rel="prev" title="半监督学习（Semi Supervised Learning）">
+                  <i class="fa fa-chevron-left"></i> 半监督学习（Semi Supervised Learning）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/04/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="next" title="Docker 常用命令">
+                  Docker 常用命令 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder"></span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/kevincabbage" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

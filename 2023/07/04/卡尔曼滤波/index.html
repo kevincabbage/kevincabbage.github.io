@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"kevincabbage.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="经典卡尔曼滤波的来龙去脉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卡尔曼滤波">
+<meta property="og:url" content="http://kevincabbage.github.io/2023/07/04/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/index.html">
+<meta property="og:site_name" content="大白菜的博客">
+<meta property="og:description" content="经典卡尔曼滤波的来龙去脉">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-04T09:19:04.000Z">
+<meta property="article:modified_time" content="2023-07-04T09:30:07.219Z">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://kevincabbage.github.io/2023/07/04/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://kevincabbage.github.io/2023/07/04/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/","path":"2023/07/04/卡尔曼滤波/","title":"卡尔曼滤波"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>卡尔曼滤波 | 大白菜的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">大白菜的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%9D%87%E6%96%B9%E8%AF%AF%E5%B7%AE"><span class="nav-number">1.</span> <span class="nav-text">最小均方误差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E5%9D%87%E6%96%B9%E8%AF%AF%E5%B7%AE"><span class="nav-number">2.</span> <span class="nav-text">线性最小均方误差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2"><span class="nav-number">3.</span> <span class="nav-text">卡尔曼滤波</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2"><span class="nav-number">4.</span> <span class="nav-text">扩展卡尔曼滤波</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">人生哪能多如意，万事只求半称心</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://kevincabbage.github.io/2023/07/04/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大白菜的博客">
+      <meta itemprop="description" content="人生哪能多如意，万事只求半称心">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="卡尔曼滤波 | 大白菜的博客">
+      <meta itemprop="description" content="经典卡尔曼滤波的来龙去脉">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          卡尔曼滤波
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-07-04 17:19:04 / 修改时间：17:30:07" itemprop="dateCreated datePublished" datetime="2023-07-04T17:19:04+08:00">2023-07-04</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">经典卡尔曼滤波的来龙去脉</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>卡尔曼滤波本质上是：非平稳信号下的序贯线性最小均方误差估计量</p>
+<h2 id="最小均方误差">最小均方误差</h2>
+<p>对于经典的均方误差（Mean Square Error, MSE）方法认为，被估计量 <span
+class="math inline">\(\boldsymbol{\theta}\)</span>
+是一个确定的未知常量，因此经典MSE通过求解下式最小得到估计值 <span
+class="math display">\[
+\text{MSE}(\boldsymbol{\theta})
+= \int \| \hat{\boldsymbol{\theta}} - \boldsymbol{\theta} \|^2
+p(\boldsymbol{x}) d\boldsymbol{x}
+\]</span></p>
+<p>其中 <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>
+是观测量 <span class="math inline">\(\boldsymbol{x}\)</span> 的函数，即
+<span class="math inline">\(\hat{\boldsymbol{\theta}} =
+f(\boldsymbol{x})\)</span></p>
+<p>而当估计量是一个随机变量时，上述的结果并没有考虑估计量 <span
+class="math inline">\(\boldsymbol{\theta}\)</span> 的先验 <span
+class="math inline">\(p(\boldsymbol{\theta})\)</span>，在添加先验信息后经典
+MSE 将会变成贝叶斯均方误差（Bayes Mean Square Error,
+BMSE），其表达式如下 <span class="math display">\[
+\text{BMSE}(\boldsymbol{\theta})
+= \iint \| \hat{\boldsymbol{\theta}} - \boldsymbol{\theta} \|^2
+p(\boldsymbol{x}, \boldsymbol{\theta}) d\boldsymbol{x}
+d\boldsymbol{\theta}
+=E(\| \hat{\boldsymbol{\theta}} - \boldsymbol{\theta} \|^2)
+\]</span></p>
+<p>同样有 <span class="math inline">\(\hat{\boldsymbol{\theta}} =
+f(\boldsymbol{x})\)</span>，其中期望是根据 <span
+class="math inline">\(p(\boldsymbol{x}, \boldsymbol{\theta})\)</span>
+来求解的，使得 BMSE 最小的 <span
+class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>
+被称为最小贝叶斯均方误差估计量也被称为最小均方误差（Minimum Mean Square
+Error, MMSE）估计量</p>
+<h2 id="线性最小均方误差">线性最小均方误差</h2>
+<p>如果对函数 <span class="math inline">\(\hat{\boldsymbol{\theta}} =
+f(\boldsymbol{x})\)</span> 做线性假设，即认为估计量由观测 <span
+class="math inline">\(\boldsymbol{x}\)</span> 线性组合而成，则有 <span
+class="math inline">\(\hat{\boldsymbol{\theta}} = \boldsymbol{K}
+\boldsymbol{x} + \boldsymbol{t}\)</span>，其 BMSE 可以写成 <span
+class="math display">\[
+\text{BMSE}
+= E(\| \boldsymbol{K} \boldsymbol{x} + \boldsymbol{t} -
+\boldsymbol{\theta} \|^2)
+\]</span></p>
+<p>为了使得上式最小，对 <span
+class="math inline">\(\boldsymbol{t}\)</span> 求导等于 <span
+class="math inline">\(\boldsymbol{0}\)</span> 可以得到 <span
+class="math display">\[
+\begin{aligned}
+\frac{\partial }{\partial\boldsymbol{t}}E(\| \boldsymbol{K}
+\boldsymbol{x} + \boldsymbol{t} - \boldsymbol{\theta} \|^2) =&amp; 0 \\
+\Rightarrow E(2\boldsymbol{t} + 2 \boldsymbol{K} \boldsymbol{x}-
+2\boldsymbol{\theta}) =&amp; 0 \\
+\Rightarrow \boldsymbol{t} =&amp; E(\boldsymbol{\theta}) -\boldsymbol{K}
+E(\boldsymbol{x})
+\end{aligned}
+\]</span></p>
+<p>带入原式中并且继续对 <span
+class="math inline">\(\boldsymbol{K}\)</span> 进行求导 <span
+class="math display">\[
+\begin{aligned}
+\frac{\partial }{\partial\boldsymbol{K}}E(\| \boldsymbol{K}
+(\boldsymbol{x} - E(\boldsymbol{x})) - (\boldsymbol{\theta} -
+E(\boldsymbol{\theta})) \|^2) = 0 \\
+\Rightarrow E(2\boldsymbol{K}(\boldsymbol{x} -
+E(\boldsymbol{x}))(\boldsymbol{x} - E(\boldsymbol{x}))^T -
+2(\boldsymbol{\theta} - E(\boldsymbol{\theta})) (\boldsymbol{x} -
+E(\boldsymbol{x})^T) = 0 \\
+\Rightarrow \boldsymbol{K} = E((\boldsymbol{\theta} -
+E(\boldsymbol{\theta})) (\boldsymbol{x} -
+E(\boldsymbol{x})^T)E((\boldsymbol{x} - E(\boldsymbol{x}))
+(\boldsymbol{x} - E(\boldsymbol{x})^T)^{-1} \\
+\Rightarrow \boldsymbol{K} =
+\boldsymbol{C}_{\boldsymbol{\theta}\boldsymbol{x}}\boldsymbol{C}_{\boldsymbol{x}\boldsymbol{x}}^{-1}
+\end{aligned}
+\]</span></p>
+<p>最终求得 <span class="math display">\[
+\hat{\boldsymbol{\theta}} = E(\boldsymbol{\theta}) +
+\boldsymbol{C}_{\boldsymbol{\theta}\boldsymbol{x}}\boldsymbol{C}_{\boldsymbol{x}\boldsymbol{x}}^{-1}
+(\boldsymbol{x} - E(\boldsymbol{x}))
+\]</span></p>
+<p>在 <span class="math inline">\(\boldsymbol{\theta},
+\boldsymbol{x}\)</span> 零均值的假设下，即 <span
+class="math inline">\(E(\boldsymbol{\theta}) = 0, E(\boldsymbol{x}) =
+0\)</span>，上式可以化简成 <span class="math display">\[
+\hat{\boldsymbol{\theta}} =
+\boldsymbol{C}_{\boldsymbol{\theta}\boldsymbol{x}}\boldsymbol{C}_{\boldsymbol{x}\boldsymbol{x}}^{-1}
+\boldsymbol{x}
+\]</span></p>
+<p>该估计量被称为线性最小方差估计量（Linear Minimum Mean Square Error,
+LMMSE）</p>
+<h2 id="卡尔曼滤波">卡尔曼滤波</h2>
+<p>如果所求变量 <span class="math inline">\(\boldsymbol{s}\)</span>
+在当前时刻 <span class="math inline">\(n\)</span> 的值 <span
+class="math inline">\(\boldsymbol{s}[n]\)</span> 和前一时刻的值 <span
+class="math inline">\(\boldsymbol{s}[n - 1]\)</span> 存在线性关系，即
+<span class="math display">\[
+\boldsymbol{s}[n] = \boldsymbol{A}[n - 1]\boldsymbol{s}[n -
+1]+\boldsymbol{B}[n - 1]\boldsymbol{u}[n]
+\]</span></p>
+<p>其中驱动噪声 <span class="math inline">\(\boldsymbol{u}[n] \backsim
+\mathcal{N}(\boldsymbol{0},\boldsymbol{Q})\)</span>，该方程俗称状态方程，表明了变量自身随着时间的变化情况，该方程一般和物理学、运动学等其他学科相关</p>
+<p>同时对于所求变量 <span class="math inline">\(\boldsymbol{s}\)</span>
+会有相应的观测 <span
+class="math inline">\(\boldsymbol{x}\)</span>，在线性假设下，认为有
+<span class="math display">\[
+\boldsymbol{x}[n] = \boldsymbol{H}[n] \boldsymbol{s}[n] +
+\boldsymbol{w}[n]
+\]</span></p>
+<p>其中观测噪声 <span class="math inline">\(\boldsymbol{w}[n] \backsim
+\mathcal{N}(\boldsymbol{0}, \boldsymbol{C}[n])\)</span></p>
+<p>令 <span class="math inline">\(\boldsymbol{X}[n] = \begin{bmatrix}
+\boldsymbol{x}[0] \\ \vdots\\ \boldsymbol{x}[n]
+\end{bmatrix}\)</span>，在线性假设下，有 <span
+class="math inline">\(\hat{\boldsymbol{s}}[n] = \boldsymbol{K}
+\boldsymbol{X}[n]+\boldsymbol{t}\)</span>，根据前面 LMMSE 的结果可知
+<span class="math display">\[
+\hat{\boldsymbol{s}}[n] = E(\boldsymbol{s}[n]) +
+\boldsymbol{C}_{\boldsymbol{s}\boldsymbol{X}}\boldsymbol{C}_{\boldsymbol{X}\boldsymbol{X}}^{-1}
+(\boldsymbol{X}[n] - E(\boldsymbol{X}[n]))
+\]</span></p>
+<p>其中 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{C}_{\boldsymbol{s}\boldsymbol{X}} =&amp;
+E((\boldsymbol{s}[i] - E(\boldsymbol{s}[i]))(\boldsymbol{X}[n] -
+E(\boldsymbol{X}[n]))^T) \\
+\boldsymbol{C}_{\boldsymbol{X}\boldsymbol{X}}
+=&amp; E((\boldsymbol{X}[n] - E(\boldsymbol{X}[n]))(\boldsymbol{X}[n] -
+E(\boldsymbol{X}[n]))^T)
+\end{aligned}
+\]</span></p>
+<p>上式中 <span class="math inline">\(\hat{\boldsymbol{s}}[n]\)</span>
+定义为 <span class="math inline">\(\boldsymbol{X}[n]\)</span>
+的线性函数，结果记为 <span
+class="math inline">\(\hat{\boldsymbol{s}}[n|n]\)</span>，可以看到每次计算都需要联合
+<span class="math inline">\(\boldsymbol{x}[0], \cdots,
+\boldsymbol{x}[n]\)</span>
+的所有数据，考虑到在时序上有很多重复计算，是否可以利用前一帧的结果 <span
+class="math inline">\(\hat{\boldsymbol{s}}[n-1|n-1]\)</span>
+和当前的观测 <span class="math inline">\(\boldsymbol{x}[n]\)</span>
+计算得到 <span
+class="math inline">\(\hat{\boldsymbol{s}}[n|n]\)</span>，即序贯
+LMMSE</p>
+<p>为了参数分离，首先将 <span
+class="math inline">\(\boldsymbol{X}[n]\)</span> 分为不相关的 <span
+class="math inline">\(\boldsymbol{X}[n-1]\)</span> 和新息 <span
+class="math inline">\(\tilde{\boldsymbol{x}}[n]\)</span>，这可以通过
+Gram-Schmidt 正交化来实现，如下式所示 <span class="math display">\[
+\tilde{\boldsymbol{x}}[n] = \boldsymbol{x}[n] -
+\hat{\boldsymbol{x}}[n|n-1]
+\]</span></p>
+<p>其中 <span class="math inline">\(\hat{\boldsymbol{x}}[n|n-1]\)</span>
+是将 <span class="math inline">\(\boldsymbol{x}[n]\)</span> 看做估计量
+<span class="math inline">\(\boldsymbol{X}[n-1]\)</span> 看做观测量，在
+LMMSE 下的结果，如下所示 <span class="math display">\[
+\hat{\boldsymbol{x}}[n|n-1] = E(\boldsymbol{x}[n]) +
+\boldsymbol{C}_{\boldsymbol{x}\boldsymbol{X}[n-1]}\boldsymbol{C}_{\boldsymbol{X}[n-1]\boldsymbol{X}[n-1]}^{-1}
+(\boldsymbol{X}[n-1] - E(\boldsymbol{X}[n-1]))
+\]</span></p>
+<p>可以证明 <span
+class="math inline">\(E(\tilde{\boldsymbol{x}}[n]\boldsymbol{X}^T[n-1])
+=
+E(\tilde{\boldsymbol{x}}[n])E(\boldsymbol{X}^T[n-1])\)</span>，过程如下
+左边等于 <span class="math display">\[
+\begin{aligned}
+&amp;E(\tilde{\boldsymbol{x}}[n]\boldsymbol{X}^T[n-1]) \\
+=&amp; E(\boldsymbol{x}[n]\boldsymbol{X}^T[n-1]) -
+E(\hat{\boldsymbol{x}}[n|n-1]\boldsymbol{X}^T[n-1]) \\
+=&amp; E(\boldsymbol{x}[n]\boldsymbol{X}^T[n-1]) -
+E(\boldsymbol{x}[n])E(\boldsymbol{X}^T[n-1]) \\
+&amp;-\boldsymbol{C}_{\boldsymbol{x}\boldsymbol{X}[n-1]}\boldsymbol{C}_{\boldsymbol{X}[n-1]\boldsymbol{X}[n-1]}^{-1}\boldsymbol{C}_{\boldsymbol{X}[n-1]\boldsymbol{X}[n-1]}
+\\
+=&amp; E(\boldsymbol{x}[n]\boldsymbol{X}^T[n-1]) -
+E(\boldsymbol{x}[n])E(\boldsymbol{X}^T[n-1]) -
+\boldsymbol{C}_{\boldsymbol{x}\boldsymbol{X}[n-1]} \\
+=&amp; \boldsymbol{C}_{\boldsymbol{x}\boldsymbol{X}[n-1]} -
+\boldsymbol{C}_{\boldsymbol{x}\boldsymbol{X}[n-1]} \\
+=&amp; 0
+\end{aligned}
+\]</span></p>
+<p>右边等于 <span class="math display">\[
+E(\tilde{\boldsymbol{x}}[n]) = E(\boldsymbol{x}[n]) -
+E(\hat{\boldsymbol{x}}[n|n-1]) = 0
+\]</span></p>
+<p>将 <span class="math inline">\(\boldsymbol{X}[n-1],
+\tilde{\boldsymbol{x}}[n]\)</span> 组成新的向量 <span
+class="math inline">\(\boldsymbol{X}&#39;[n] = \begin{bmatrix}
+\boldsymbol{X}[n-1]\\ \tilde{\boldsymbol{x}}[n]
+\end{bmatrix}\)</span>，注意到 <span
+class="math inline">\(\boldsymbol{X}[n]\)</span> 可以由 <span
+class="math inline">\(\boldsymbol{X}&#39;[n]\)</span>
+线性变换得到，所以两者的 LMMSE 结果一致，将前面得到的关于 <span
+class="math inline">\(\boldsymbol{X}[n]\)</span> 的 LMMSE 结果转变成关于
+<span class="math inline">\(\boldsymbol{X}&#39;[n]\)</span> 的 LMMSE
+结果，如下所示 <span class="math display">\[
+\hat{\boldsymbol{s}}[n|n] = E(\boldsymbol{s}[n]) +
+\boldsymbol{C}_{\boldsymbol{s}\boldsymbol{X}&#39;}\boldsymbol{C}_{\boldsymbol{X}&#39;\boldsymbol{X}&#39;}^{-1}
+(\boldsymbol{X}&#39;[n] - E(\boldsymbol{X}&#39;[n]))
+\]</span></p>
+<p>其中 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{C}_{\boldsymbol{s}\boldsymbol{X}&#39;}
+=
+\begin{bmatrix}
+\boldsymbol{C}_{\boldsymbol{s}\boldsymbol{X}[n-1]} &amp;
+\boldsymbol{C}_{\boldsymbol{s}\tilde{\boldsymbol{x}}[n]}
+\end{bmatrix} \\
+\boldsymbol{C}_{\boldsymbol{X}&#39;\boldsymbol{X}&#39;}
+=
+\begin{bmatrix}
+\boldsymbol{C}_{\boldsymbol{X}[n-1]\boldsymbol{X}[n-1]} &amp;
+\boldsymbol{0} \\
+\boldsymbol{0}
+&amp;\boldsymbol{C}_{\tilde{\boldsymbol{x}}[n]\tilde{\boldsymbol{x}}[n]}
+\end{bmatrix}
+\end{aligned}
+\]</span></p>
+<p>注意到矩阵中存在部分0，因此转变后的 LMMSE 结果可以拆成 <span
+class="math display">\[
+\begin{aligned}
+\hat{\boldsymbol{s}}[n|n] =&amp; E(\boldsymbol{s}[n]) +
+\boldsymbol{C}_{\boldsymbol{s}[n]\boldsymbol{X}[n-1]}\boldsymbol{C}_{\boldsymbol{X}[n-1]\boldsymbol{X}[n-1]}^{-1}
+(\boldsymbol{X}[n-1] - E(\boldsymbol{X}[n-1]))\\
+&amp; +
+\boldsymbol{C}_{\boldsymbol{s}\tilde{\boldsymbol{x}}[n]}\boldsymbol{C}_{\tilde{\boldsymbol{x}}[n]\tilde{\boldsymbol{x}}[n]}^{-1}
+(\tilde{\boldsymbol{x}}[n] - E(\tilde{\boldsymbol{x}}[n]))
+\end{aligned}
+\]</span></p>
+<p>利用 <span class="math inline">\(\boldsymbol{s}[n] -
+E(\boldsymbol{s}[n]) = \boldsymbol{A}[n - 1]\boldsymbol{s}[n - 1] -
+\boldsymbol{A}[n - 1]E(\boldsymbol{s}[n - 1])+\boldsymbol{B}[n -
+1]\boldsymbol{u}[n]\)</span> 可以得到 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{C}_{\boldsymbol{s}[n]\boldsymbol{X}[n-1]}
+=&amp; E((\boldsymbol{s}[n] - E(\boldsymbol{s}[n]))(\boldsymbol{X}[n -
+1] - E(\boldsymbol{X}[n - 1]))^T)\\
+=&amp; \boldsymbol{A}[n -
+1]\boldsymbol{C}_{\boldsymbol{s}[n-1]\boldsymbol{X}[n-1]}
+\end{aligned}
+\]</span></p>
+<p>继而可以得到 <span class="math display">\[
+\begin{aligned}
+&amp;\hat{\boldsymbol{s}}[n|n]\\
+=&amp; \boldsymbol{A}[n - 1]E(\boldsymbol{s}[n - 1]) \\
+&amp;+ \boldsymbol{A}[n -
+1]\boldsymbol{C}_{\boldsymbol{s}[n-1]\boldsymbol{X}[n-1]}\boldsymbol{C}_{\boldsymbol{X}[n-1]\boldsymbol{X}[n-1]}^{-1}
+(\boldsymbol{X}[n-1] - E(\boldsymbol{X}[n-1]))\\
+&amp; +
+\boldsymbol{C}_{\boldsymbol{s}\tilde{\boldsymbol{x}}[n]}\boldsymbol{C}_{\tilde{\boldsymbol{x}}[n]\tilde{\boldsymbol{x}}[n]}^{-1}
+(\tilde{\boldsymbol{x}}[n] - E(\tilde{\boldsymbol{x}}[n])) \\
+=&amp; \boldsymbol{A}[n - 1] \hat{\boldsymbol{s}}[n-1|n-1] +
+\boldsymbol{C}_{\boldsymbol{s}\tilde{\boldsymbol{x}}[n]}\boldsymbol{C}_{\tilde{\boldsymbol{x}}[n]\tilde{\boldsymbol{x}}[n]}^{-1}
+(\tilde{\boldsymbol{x}}[n] - E(\tilde{\boldsymbol{x}}[n]))
+\end{aligned}
+\]</span></p>
+<p>如果令 <span class="math inline">\(\hat{\boldsymbol{s}}[n|n-1] =
+\boldsymbol{A}[n - 1] \hat{\boldsymbol{s}}[n-1|n-1]\)</span>，则有 <span
+class="math display">\[
+\begin{aligned}
+\hat{\boldsymbol{s}}[n|n]
+=&amp; \hat{\boldsymbol{s}}[n|n-1] +
+\boldsymbol{C}_{\boldsymbol{s}\tilde{\boldsymbol{x}}[n]}\boldsymbol{C}_{\tilde{\boldsymbol{x}}[n]\tilde{\boldsymbol{x}}[n]}^{-1}
+(\tilde{\boldsymbol{x}}[n] - E(\tilde{\boldsymbol{x}}[n]))
+\end{aligned}
+\]</span></p>
+<p>其中 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{C}_{\boldsymbol{s}\tilde{\boldsymbol{x}}[n]} =&amp;
+E((\boldsymbol{s}[n] - E(\boldsymbol{s}[n]))(\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))^T) \\
+\boldsymbol{C}_{\tilde{\boldsymbol{x}}[n]\tilde{\boldsymbol{x}}[n]}
+=&amp; E((\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))(\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))^T)
+\end{aligned}
+\]</span></p>
+<p>根据 <span class="math inline">\(\hat{\boldsymbol{x}}[n|n -
+1]\)</span> 的表达式，很容易证明 <span class="math display">\[
+\hat{\boldsymbol{x}}[n|n - 1] =
+\boldsymbol{H}[n]\hat{\boldsymbol{s}}[n|n - 1]
+\]</span></p>
+<p>因此有 <span class="math display">\[
+\begin{aligned}
+\tilde{\boldsymbol{x}}[n] - E(\tilde{\boldsymbol{x}}[n])
+=&amp; \tilde{\boldsymbol{x}}[n] \\
+=&amp; \boldsymbol{x}[n] - \hat{\boldsymbol{x}}[n|n-1] \\
+=&amp; \boldsymbol{x}[n] - \boldsymbol{H}[n]\hat{\boldsymbol{s}}[n|n -
+1] \\
+=&amp; \boldsymbol{H}[n]\boldsymbol{s}[n] + \boldsymbol{w}[n] -
+\boldsymbol{H}[n]\hat{\boldsymbol{s}}[n|n - 1] \\
+=&amp; \boldsymbol{H}[n](\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n -
+1]) + \boldsymbol{w}[n]
+\end{aligned}
+\]</span></p>
+<p>利用 <span class="math inline">\(\hat{\boldsymbol{s}}[n|n-1] =
+E(\boldsymbol{s}[n]) +
+\boldsymbol{C}_{\boldsymbol{s}\boldsymbol{X}[n-1]}\boldsymbol{C}_{\boldsymbol{X}[n-1]\boldsymbol{X}[n-1]}^{-1}
+(\boldsymbol{X}[n-1] - E(\boldsymbol{X}[n-1]))\)</span> 和 <span
+class="math inline">\(E((\boldsymbol{X}[n-1] -
+E(\boldsymbol{X}[n-1]))(\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))^T) = 0\)</span>，可以得到 <span
+class="math display">\[
+\begin{aligned}
+&amp;\boldsymbol{C}_{\boldsymbol{s}\tilde{\boldsymbol{x}}[n]}\\
+=&amp; E((\boldsymbol{s}[n] -
+E(\boldsymbol{s}[n]))(\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))^T) \\
+=&amp; E((\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n -
+1])(\tilde{\boldsymbol{x}}[n] - E(\tilde{\boldsymbol{x}}[n]))^T) \\
+=&amp; E((\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n -
+1])(\boldsymbol{H}[n](\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n - 1])
++ \boldsymbol{w}[n])^T) \\
+=&amp; E((\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n -
+1])(\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n - 1])^T)
+\boldsymbol{H}^T[n]
+\end{aligned}
+\]</span></p>
+<p>令 <span class="math inline">\(\boldsymbol{M}[n|n - 1] =
+E((\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n - 1])(\boldsymbol{s}[n]
+- \hat{\boldsymbol{s}}[n|n - 1])^T)\)</span>，则上式变成 <span
+class="math display">\[
+\boldsymbol{C}_{\boldsymbol{s}\tilde{\boldsymbol{x}}[n]} =
+\boldsymbol{M}[n|n - 1]\boldsymbol{H}^T[n]
+\]</span></p>
+<p>另一方面利用 <span class="math inline">\(\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]) = \boldsymbol{H}[n](\boldsymbol{s}[n] -
+\hat{\boldsymbol{s}}[n|n - 1]) + \boldsymbol{w}[n]\)</span>，可以得到
+<span class="math display">\[
+\begin{aligned}
+\boldsymbol{C}_{\tilde{\boldsymbol{x}}[n]\tilde{\boldsymbol{x}}[n]}
+=&amp; E((\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))(\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))^T) \\
+=&amp; \boldsymbol{H}[n] \boldsymbol{M}[n|n - 1]\boldsymbol{H}^T[n] +
+\boldsymbol{C}[n]
+\end{aligned}
+\]</span></p>
+<p>因此有 <span class="math display">\[
+\hat{\boldsymbol{s}}[n|n] = \hat{\boldsymbol{s}}[n|n-1] +
+\boldsymbol{K}[n](\boldsymbol{x}[n] -
+\boldsymbol{H}[n]\hat{\boldsymbol{s}}[n|n - 1])
+\]</span></p>
+<p>其中 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{K}[n] =&amp;
+\boldsymbol{C}_{\boldsymbol{s}\boldsymbol{X}[n-1]}\boldsymbol{C}_{\boldsymbol{X}[n-1]\boldsymbol{X}[n-1]}^{-1}
+\\
+=&amp; \boldsymbol{M}[n|n - 1]\boldsymbol{H}^T[n](\boldsymbol{H}[n]
+\boldsymbol{M}[n|n - 1]\boldsymbol{H}^T[n] + \boldsymbol{C}[n])^{-1}
+\end{aligned}
+\]</span></p>
+<p>最后需要给出 <span class="math inline">\(\boldsymbol{M}[n|n -
+1]\)</span> 和 <span class="math inline">\(\boldsymbol{M}[n|n]\)</span>
+的递推公式</p>
+<p>利用 <span class="math inline">\(\boldsymbol{s}[n] -
+\hat{\boldsymbol{s}}[n|n - 1] = \boldsymbol{A}[n - 1]\boldsymbol{s}[n-1]
++ \boldsymbol{B}[n - 1]\boldsymbol{u[n]} - \boldsymbol{A}[n - 1]
+\hat{\boldsymbol{s}}[n - 1|n - 1]\)</span>，可以得到 <span
+class="math display">\[
+\begin{aligned}
+\boldsymbol{M}[n|n - 1] =&amp; E((\boldsymbol{s}[n] -
+\hat{\boldsymbol{s}}[n|n - 1])(\boldsymbol{s}[n] -
+\hat{\boldsymbol{s}}[n|n - 1])^T) \\
+=&amp; \boldsymbol{A}[n - 1]\boldsymbol{M}[n-1|n-1]\boldsymbol{A}^T[n -
+1] + \boldsymbol{B}[n - 1]\boldsymbol{Q}\boldsymbol{B}^T[n - 1]
+\end{aligned}
+\]</span></p>
+<p>利用 <span class="math inline">\(\hat{\boldsymbol{s}}[n|n] =
+\hat{\boldsymbol{s}}[n|n-1] +
+\boldsymbol{K}[n](\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))\)</span> 可以得到 <span
+class="math display">\[
+\begin{aligned}
+\boldsymbol{M}[n|n] =&amp; E((\boldsymbol{s}[n] -
+\hat{\boldsymbol{s}}[n|n])(\boldsymbol{s}[n] -
+\hat{\boldsymbol{s}}[n|n])^T) \\
+=&amp; E((\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n -
+1])(\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n - 1])^T)\\
+&amp;- 2E((\boldsymbol{s}[n] - \hat{\boldsymbol{s}}[n|n -
+1])(\tilde{\boldsymbol{x}}[n] - E(\tilde{\boldsymbol{x}}[n]))^T)
+\boldsymbol{K}^T[n]\\
+&amp;+\boldsymbol{K}[n] E(\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))(\tilde{\boldsymbol{x}}[n] -
+E(\tilde{\boldsymbol{x}}[n]))^T) \boldsymbol{K}^T[n]\\
+=&amp; \boldsymbol{M}[n|n-1] \\
+&amp;- 2 \boldsymbol{M}[n|n-1] \boldsymbol{H}^T[n]\boldsymbol{K}^T[n]\\
+&amp;+ \boldsymbol{M}[n|n-1] \boldsymbol{H}^T[n]\boldsymbol{K}^T[n] \\
+=&amp; (\boldsymbol{I} -
+\boldsymbol{K}[n]\boldsymbol{H}[n])\boldsymbol{M}[n|n - 1]
+\end{aligned}
+\]</span></p>
+<p>至此所有递推公式都推导完毕，可以很清楚地看到一切皆起源于方程 <span
+class="math display">\[
+\hat{\boldsymbol{s}}[n] = E(\boldsymbol{s}[n]) +
+\boldsymbol{C}_{\boldsymbol{s}\boldsymbol{X}}\boldsymbol{C}_{\boldsymbol{X}\boldsymbol{X}}^{-1}
+(\boldsymbol{X}[n] - E(\boldsymbol{X}[n]))
+\]</span></p>
+<p>后面的推导只是在完成该方程序贯形式下的结果罢了，而该方程的起源来自于线性假设，所以卡尔曼滤波本质上是非平稳信号下的序贯线性最小均方误差估计量，其最终结果可以总结如下步骤：
+初始化： <span class="math display">\[
+\hat{\boldsymbol{s}}[-1|-1] = \boldsymbol{\mu}_{\boldsymbol{s}},
+\boldsymbol{M}[-1|-1] = \boldsymbol{C}_{\boldsymbol{s}}
+\]</span></p>
+<p>预测估计量： <span class="math display">\[
+\hat{\boldsymbol{s}}[n|n - 1] = \boldsymbol{A}[n -
+1]\hat{\boldsymbol{s}}[n - 1|n - 1]
+\]</span></p>
+<p>预测最小 MSE 矩阵： <span class="math display">\[
+\boldsymbol{M}[n|n - 1] = \boldsymbol{A}[n - 1] \boldsymbol{M}[n - 1| n
+- 1] \boldsymbol{A}^T[n - 1] + \boldsymbol{B}[n -
+1]\boldsymbol{Q}\boldsymbol{B}^T[n - 1]
+\]</span></p>
+<p>增益矩阵： <span class="math display">\[
+\boldsymbol{K}[n] = \boldsymbol{M}[n|n - 1]
+\boldsymbol{H}^T[n](\boldsymbol{H}[n]\boldsymbol{M}[n|n -
+1]\boldsymbol{H}^T[n] + \boldsymbol{C}[n])^{-1}
+\]</span></p>
+<p>修正估计量： <span class="math display">\[
+\hat{\boldsymbol{s}}[n|n] = \hat{\boldsymbol{s}}[n|n - 1] +
+\boldsymbol{K}[n](\boldsymbol{x}[n] - \boldsymbol{H}[n]
+\hat{\boldsymbol{s}}[n|n - 1])
+\]</span></p>
+<p>修正最小 MSE 矩阵： <span class="math display">\[
+\boldsymbol{M}[n|n] = (\boldsymbol{I} - \boldsymbol{K}[n]
+\boldsymbol{H}[n]) \boldsymbol{M}[n|n - 1]
+\]</span></p>
+<h2 id="扩展卡尔曼滤波">扩展卡尔曼滤波</h2>
+<p>卡尔曼滤波基于线性假设，当状态方程和观测方程均不为线性的时候，如下所示
+<span class="math display">\[
+\begin{aligned}
+\boldsymbol{s}[n] =&amp; a(\boldsymbol{s}[n - 1]) + \boldsymbol{B}[n -
+1]\boldsymbol{u}[n] \\
+\boldsymbol{x}[n] =&amp; h(\boldsymbol{s}[n]) + \boldsymbol{w}[n]
+\end{aligned}
+\]</span></p>
+<p>如果认为前一时刻的值几乎在真值附近，将非线性函数 <span
+class="math inline">\(a,h\)</span> 进行泰勒展开可以得到 <span
+class="math display">\[
+\begin{aligned}
+a(\boldsymbol{s}[n - 1]) \approx&amp; a(\tilde{\boldsymbol{s}}[n - 1 | n
+- 1]) + \boldsymbol{A}[n - 1](\boldsymbol{s}[n - 1] -
+\tilde{\boldsymbol{s}}[n - 1 | n - 1]) \\
+h(\boldsymbol{s}[n]) \approx&amp; h(\tilde{\boldsymbol{s}}[n| n - 1]) +
+\boldsymbol{H}[n](\boldsymbol{s}[n] - \tilde{\boldsymbol{s}}[n | n - 1])
+\\
+\end{aligned}
+\]</span></p>
+<p>其中 <span class="math inline">\(\boldsymbol{A}[n - 1] =
+\frac{\partial a(\boldsymbol{x})}{\partial
+\boldsymbol{x}}\bigg|_{\boldsymbol{x} = \tilde{\boldsymbol{s}}[n - 1 | n
+- 1]}\)</span>, <span class="math inline">\(\boldsymbol{H}[n] =
+\frac{\partial h(\boldsymbol{x})}{\partial \boldsymbol{x}}
+\bigg|_{\boldsymbol{x} = \tilde{\boldsymbol{s}}[n | n - 1]}\)</span></p>
+<p>则原状态和观测方程将会变为 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{s}[n] =&amp; \boldsymbol{A}[n - 1] \boldsymbol{s}[n - 1] +
+\boldsymbol{B}[n - 1]\boldsymbol{u}[n] + \boldsymbol{a}[n - 1] \\
+\boldsymbol{x}[n] =&amp; \boldsymbol{H}[n] \boldsymbol{s}[n] +
+\boldsymbol{w}[n] + \boldsymbol{h}[n - 1]
+\end{aligned}
+\]</span></p>
+<p>其中 <span class="math inline">\(\boldsymbol{a}[n - 1] =
+a(\tilde{\boldsymbol{s}}[n - 1 | n - 1]) - \boldsymbol{A}[n - 1]
+\tilde{\boldsymbol{s}}[n - 1 | n - 1]\)</span>，<span
+class="math inline">\(\boldsymbol{h}[n - 1] =
+h(\tilde{\boldsymbol{s}}[n| n - 1]) - \boldsymbol{H}[n]
+\tilde{\boldsymbol{s}}[n | n - 1]\)</span></p>
+<p>最终结果可以总结如下步骤： 初始化： <span class="math display">\[
+\hat{\boldsymbol{s}}[-1|-1] = \boldsymbol{\mu}_{\boldsymbol{s}},
+\boldsymbol{M}[-1|-1] = \boldsymbol{C}_{\boldsymbol{s}}
+\]</span></p>
+<p><strong>预测估计量</strong>： <span class="math display">\[
+\hat{\boldsymbol{s}}[n|n - 1] = a(\hat{\boldsymbol{s}}[n - 1|n - 1])
+\]</span></p>
+<p>预测最小 MSE 矩阵： <span class="math display">\[
+\boldsymbol{M}[n|n - 1] = \boldsymbol{A}[n - 1] \boldsymbol{M}[n - 1| n
+- 1] \boldsymbol{A}^T[n - 1] + \boldsymbol{B}[n -
+1]\boldsymbol{Q}\boldsymbol{B}^T[n - 1]
+\]</span></p>
+<p>增益矩阵： <span class="math display">\[
+\boldsymbol{K}[n] = \boldsymbol{M}[n|n - 1]
+\boldsymbol{H}^T[n](\boldsymbol{H}[n]\boldsymbol{M}[n|n -
+1]\boldsymbol{H}^T[n] + \boldsymbol{C}[n])^{-1}
+\]</span></p>
+<p><strong>修正估计量</strong>： <span class="math display">\[
+\hat{\boldsymbol{s}}[n|n] = \hat{\boldsymbol{s}}[n|n - 1] +
+\boldsymbol{K}[n](\boldsymbol{x}[n] - h(\hat{\boldsymbol{s}}[n|n - 1]))
+\]</span></p>
+<p>修正最小 MSE 矩阵： <span class="math display">\[
+\boldsymbol{M}[n|n] = (\boldsymbol{I} - \boldsymbol{K}[n]
+\boldsymbol{H}[n]) \boldsymbol{M}[n|n - 1]
+\]</span></p>
+<p>可以看到与前面有差别的部分主要在于 “预测估计量” 和 “修正估计量”
+两个步骤</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/04/AX-XB%E6%B1%82%E8%A7%A3/" rel="prev" title="AX=XB求解">
+                  <i class="fa fa-chevron-left"></i> AX=XB求解
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder"></span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/kevincabbage" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

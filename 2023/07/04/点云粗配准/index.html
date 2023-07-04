@@ -21,26 +21,26 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"kevincabbage.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Hexo 的入门 &quot;Hello World&quot;">
+    <meta name="description" content="点云粗配准的主要思想">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://kevincabbage.github.io/2023/06/23/hello-world/index.html">
+<meta property="og:title" content="点云粗配准">
+<meta property="og:url" content="http://kevincabbage.github.io/2023/07/04/%E7%82%B9%E4%BA%91%E7%B2%97%E9%85%8D%E5%87%86/index.html">
 <meta property="og:site_name" content="大白菜的博客">
-<meta property="og:description" content="Hexo 的入门 &quot;Hello World&quot;">
+<meta property="og:description" content="点云粗配准的主要思想">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-06-23T14:03:23.726Z">
-<meta property="article:modified_time" content="2023-07-03T15:00:50.900Z">
+<meta property="article:published_time" content="2023-07-04T07:54:53.000Z">
+<meta property="article:modified_time" content="2023-07-04T08:02:21.275Z">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://kevincabbage.github.io/2023/06/23/hello-world/">
+<link rel="canonical" href="http://kevincabbage.github.io/2023/07/04/%E7%82%B9%E4%BA%91%E7%B2%97%E9%85%8D%E5%87%86/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://kevincabbage.github.io/2023/06/23/hello-world/","path":"2023/06/23/hello-world/","title":"Hello World"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://kevincabbage.github.io/2023/07/04/%E7%82%B9%E4%BA%91%E7%B2%97%E9%85%8D%E5%87%86/","path":"2023/07/04/点云粗配准/","title":"点云粗配准"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Hello World | 大白菜的博客</title>
+<title>点云粗配准 | 大白菜的博客</title>
   
 
 
@@ -99,7 +99,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -112,7 +112,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#quick-start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -153,7 +152,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://kevincabbage.github.io/2023/06/23/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://kevincabbage.github.io/2023/07/04/%E7%82%B9%E4%BA%91%E7%B2%97%E9%85%8D%E5%87%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -166,12 +165,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Hello World | 大白菜的博客">
-      <meta itemprop="description" content="Hexo 的入门 "Hello World"">
+      <meta itemprop="name" content="点云粗配准 | 大白菜的博客">
+      <meta itemprop="description" content="点云粗配准的主要思想">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          点云粗配准
         </h1>
 
         <div class="post-meta-container">
@@ -181,15 +180,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2023-06-23 22:03:23" itemprop="dateCreated datePublished" datetime="2023-06-23T22:03:23+08:00">2023-06-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-07-03 23:00:50" itemprop="dateModified" datetime="2023-07-03T23:00:50+08:00">2023-07-03</time>
+      <time title="创建时间：2023-07-04 15:54:53 / 修改时间：16:02:21" itemprop="dateCreated datePublished" datetime="2023-07-04T15:54:53+08:00">2023-07-04</time>
     </span>
 
   
@@ -202,36 +195,92 @@
     </span>
 </div>
 
-            <div class="post-description">Hexo 的入门 "Hello World"</div>
+            <div class="post-description">点云粗配准的主要思想</div>
         </div>
       </header>
 
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very
-first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for
-more info. If you get any problems when using Hexo, you can find the
-answer in <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or
-you can ask me on <a
-target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <div class="post-body" itemprop="articleBody"><p>点云精细配准受到初始值的影响，会收敛到局部最小值，因此点云的粗配准就变得相当重要。对于刚体来说，假设目前有原始点云
+<span class="math inline">\(\boldsymbol p_i^s(i = 1,\cdots,n)\)</span>
+和目标点云 <span class="math inline">\(\boldsymbol p_i^t(i =
+1,\cdots,m)\)</span>，点云粗配准完成的工作主要就是求解两团刚体之间的
+<span class="math inline">\(\boldsymbol R\)</span> 和 <span
+class="math inline">\(\boldsymbol t\)</span>，使得原始点云 <span
+class="math inline">\(\boldsymbol p_i^s\)</span> 通过变换得到新的点云
+<span class="math inline">\(\boldsymbol p_i^{s_{new}} = \boldsymbol R
+\boldsymbol p_i^s + \boldsymbol t\)</span> 和目标点云 <span
+class="math inline">\(\boldsymbol p_i^t\)</span>
+之间最接近，即两者之间最近邻距离小于 <span
+class="math inline">\(\varepsilon\)</span>
+的点云数目最大化，该准则被称为LCP（Largest Common Points）</p>
+<p>假设现在找到了 <span class="math inline">\(k\)</span> 个点云对 <span
+class="math inline">\(\boldsymbol p_i^t\)</span> 和 <span
+class="math inline">\(\boldsymbol p_i^s,i =
+1,\cdots,n\)</span>，那么点云配准就是在求解最优的 <span
+class="math inline">\(\boldsymbol R^*,\boldsymbol t^*\)</span>
+使得满足如下的式子 <span class="math display">\[
+\boldsymbol R^*,\boldsymbol t^* = \arg\min_{\boldsymbol R,\boldsymbol
+t}\frac{1}{k} \sum_{i =1}^{k}w_i||\boldsymbol R \boldsymbol p_i^s +
+\boldsymbol t - \boldsymbol p_i^t||^2
+\]</span></p>
+<p>求解上述问题的常用步骤如下</p>
+<ol type="1">
+<li><p>从目标点云和源点云中找到点对 <span
+class="math inline">\(\boldsymbol p_i^t,\boldsymbol
+p_i^s\)</span></p></li>
+<li><p>根据权重，计算等效中心 <span
+class="math inline">\(\overline{\boldsymbol p^t} = \frac{\sum_{i = 1}^k
+w_i \boldsymbol p_i^t}{\sum_{i = 1}^k w_i}, \overline{\boldsymbol p^s} =
+\frac{\sum_{i = 1}^k w_i \boldsymbol p_i^s}{\sum_{i =
+1}^kw_i}\)</span></p></li>
+<li><p>将每个点去中心化 <span class="math inline">\(\hat{\boldsymbol
+p_i^s} = \boldsymbol p_i^s - \overline{\boldsymbol p^s},\hat{\boldsymbol
+p_i^t} = \boldsymbol p_i^t - \overline{\boldsymbol
+p^t}\)</span></p></li>
+<li><p>对协方差矩阵进行SVD分解 <span class="math inline">\(\Sigma =
+\boldsymbol U \boldsymbol \Lambda \boldsymbol
+V^T\)</span>，其中协方差矩阵 <span class="math inline">\(\Sigma\)</span>
+为 <span class="math display">\[\Sigma = \begin{bmatrix}
+\hat{\boldsymbol p_1^s} &amp; \hat{\boldsymbol p_2^s} &amp; \cdots &amp;
+\hat{\boldsymbol p_k^s}
+\end{bmatrix}
+\begin{bmatrix}
+w_1 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; w_2 &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; w_k
+\end{bmatrix}
+\begin{bmatrix}
+\hat{\boldsymbol p_1^t}^T \\
+\vdots \\
+\hat{\boldsymbol p_k^t}^T
+\end{bmatrix}\]</span></p></li>
+<li><p>求解得到旋转矩阵 <span class="math inline">\(\boldsymbol R^* =
+\boldsymbol V \begin{bmatrix} 1 &amp; 0 &amp; \cdots &amp; 0 \\ 0 &amp;
+1 &amp; \cdots &amp; 0 \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots
+\\ 0 &amp; 0 &amp; \cdots &amp; |\boldsymbol V \boldsymbol U^T|
+\end{bmatrix}\boldsymbol U^T\)</span></p></li>
+<li><p>求解得到平移向量 <span class="math inline">\(\boldsymbol t^* =
+\overline{\boldsymbol p^t} - \boldsymbol R^* \overline{\boldsymbol
+p^s}\)</span></p></li>
+</ol>
+<p>注意到在每个点集中选取3组点就可以进行上述的计算，然后根据LCP准则得到最优的
+<span class="math inline">\(\boldsymbol R^*\)</span> 和 <span
+class="math inline">\(\boldsymbol t^*\)</span>，因此使用穷举法的复杂度是
+<span class="math inline">\(O(n^3m^3k)\)</span>，如果点云数量在 <span
+class="math inline">\(10^4\)</span>
+量级，该复杂度在工程上是不可接受的。为了降低复杂度，后面涌现了一大批算法，其本质思想就是在选择点对的时候根据某些条件去掉明显不可理的点对，这些算法的区别就在于如何设计这些条件。</p>
+<p>因此有人提出了RANSAC算法，从源点云中随机提取3个点，然后穷举目标点云中所有3点对计算旋转矩阵，然后根据旋转矩阵计算距离小于
+<span class="math inline">\(\varepsilon\)</span>，重复此步骤 <span
+class="math inline">\(L\)</span> 次，根据LCP准则从这 <span
+class="math inline">\(L\)</span> 次中选取最优的 <span
+class="math inline">\(\boldsymbol R^*\)</span> 和 <span
+class="math inline">\(\boldsymbol t^*\)</span>，该方法的复杂度是 <span
+class="math inline">\(O(Lm^3k)\)</span>，通过调节 <span
+class="math inline">\(L\)</span> 在精度和速度之间取得平衡。</p>
+<p>4PCS算法在源点云中选取四个点，如果是刚体变换的话，目标点云中对应的四个点同样需要满足一定的条件，这四个点需要满足一定的条件，通过该条件来筛选原始点对，减少计算量。</p>
 
     </div>
 
@@ -245,10 +294,13 @@ target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2023/07/04/%E7%82%B9%E4%BA%91%E7%B2%BE%E9%85%8D%E5%87%86/" rel="prev" title="点云精配准">
+                  <i class="fa fa-chevron-left"></i> 点云精配准
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/07/03/%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2/" rel="next" title="图像滤波（Image Denoising）">
-                  图像滤波（Image Denoising） <i class="fa fa-chevron-right"></i>
+                <a href="/2023/07/04/NeRF/" rel="next" title="NeRF">
+                  NeRF <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
