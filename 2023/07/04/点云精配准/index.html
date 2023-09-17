@@ -29,7 +29,7 @@
 <meta property="og:description" content="点云配准的公式推导">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-07-04T07:40:01.000Z">
-<meta property="article:modified_time" content="2023-07-04T09:58:36.333Z">
+<meta property="article:modified_time" content="2023-09-17T15:34:14.744Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -112,7 +112,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#point-to-point-icp"><span class="nav-number">1.</span> <span class="nav-text">Point-to-Point ICP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#point-to-plane-icp"><span class="nav-number">2.</span> <span class="nav-text">Point-to-Plane ICP</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#point-to-point-icp"><span class="nav-number">1.</span> <span class="nav-text">Point-to-Point ICP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#point-to-plane-icp"><span class="nav-number">2.</span> <span class="nav-text">Point-to-Plane ICP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generalized-icp"><span class="nav-number">3.</span> <span class="nav-text">Generalized ICP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E5%90%8E%E7%9A%84%E8%BF%AD%E4%BB%A3%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">简化后的迭代表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E-point-to-point-icp-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">3.2.</span> <span class="nav-text">与 Point-to-Point ICP 的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E-point-to-plane-icp-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">3.3.</span> <span class="nav-text">与 Point-to-Plane ICP 的关系</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -181,9 +181,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-07-04 15:40:01 / 修改时间：17:58:36" itemprop="dateCreated datePublished" datetime="2023-07-04T15:40:01+08:00">2023-07-04</time>
+      <time title="创建时间：2023-07-04 15:40:01" itemprop="dateCreated datePublished" datetime="2023-07-04T15:40:01+08:00">2023-07-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-09-17 23:34:14" itemprop="dateModified" datetime="2023-09-17T23:34:14+08:00">2023-09-17</time>
     </span>
 
   
@@ -621,6 +627,225 @@ class="math inline">\(\boldsymbol R = \begin{bmatrix} 1 &amp; -y &amp;
 p\\ y &amp; 1 &amp; -r\\ -p &amp; r &amp; 1
 \end{bmatrix}\)</span></p></li>
 </ol>
+<h2 id="generalized-icp">Generalized ICP</h2>
+<p>考虑到高斯函数表达能力强、通用性好，可以用来描述多种点云形态，包括点、线、面、体，因此需要将
+ICP 扩展到高斯函数和高斯函数之间的匹配，由此发展出了Generalized
+ICP，简称 GICP</p>
+<p>假设目标源点云的高斯函数为 <span
+class="math inline">\(\mathcal{N}(\boldsymbol\mu_s,\boldsymbol\Sigma_s)\)</span>，目标点云的高斯函数为
+<span
+class="math inline">\(\mathcal{N}(\boldsymbol\mu_t,\boldsymbol\Sigma_t)\)</span>，采用欧式距离来描述两个高斯之间的距离
+<span class="math display">\[
+\begin{aligned}
+d&amp;=\int(\mathcal{N}(\boldsymbol{x}|\boldsymbol\mu_s,\boldsymbol\Sigma_s)-\mathcal{N}(\boldsymbol{x}|\boldsymbol\mu_t\boldsymbol\Sigma_t))^2d\boldsymbol{x}\\
+&amp;=\int\mathcal{N}^2(\boldsymbol{x}|\boldsymbol\mu_s,\boldsymbol\Sigma_s)d\boldsymbol{x}+\int\mathcal{N}^2(\boldsymbol{x}|\boldsymbol\mu_t,\boldsymbol\Sigma_t)d\boldsymbol{x}-2\int\mathcal{N}(\boldsymbol{x}|\boldsymbol\mu_s,\boldsymbol\Sigma_s)\mathcal{N}(\boldsymbol{x}|\boldsymbol\mu_t,\boldsymbol\Sigma_t)d\boldsymbol{x}
+\end{aligned}
+\]</span></p>
+<p>配准的目的是为了使得上述距离最小，考虑到前两项为常数，意味着第三项取到最大，对第三项进行积分可以得到
+<span class="math display">\[
+\begin{aligned}
+&amp;\int\mathcal{N}(\boldsymbol{x}|\boldsymbol\mu_s,\boldsymbol\Sigma_s)\mathcal{N}(\boldsymbol{x}|\boldsymbol\mu_t,\boldsymbol\Sigma_t)d\boldsymbol{x}\\
+&amp;=
+\int\frac{1}{\sqrt{(2\pi)^n|\boldsymbol\Sigma_s|}}e^{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol\mu_s)^T\boldsymbol\Sigma_s^{-1}(\boldsymbol{x}-\boldsymbol\mu_s)}
+\frac{1}{\sqrt{(2\pi)^n|\boldsymbol\Sigma_t|}}e^{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol\mu_t)^T\boldsymbol\Sigma_t^{-1}(\boldsymbol{x}-\boldsymbol\mu_t)}d\boldsymbol{x}\\
+&amp;=
+\int\frac{1}{(2\pi)^n\sqrt{|\boldsymbol\Sigma_s||\boldsymbol\Sigma_t|}}e^{-\frac{1}{2}[(\boldsymbol{x}-\boldsymbol\mu_s)^T\boldsymbol\Sigma_s^{-1}(\boldsymbol{x}-\boldsymbol\mu_s)+(\boldsymbol{x}-\boldsymbol\mu_t)^T\boldsymbol\Sigma_t^{-1}(\boldsymbol{x}-\boldsymbol\mu_t)]}d\boldsymbol{x}\\
+&amp;=
+e^{-\frac{1}{2}[\boldsymbol\mu_s^T\boldsymbol\Sigma_s^{-1}\boldsymbol\mu_s+\boldsymbol\mu_t^T\boldsymbol\Sigma_t^{-1}\boldsymbol\mu_t-\boldsymbol\mu^T(\boldsymbol\Sigma_s^{-1}+\boldsymbol\Sigma_t^{-1})\boldsymbol\mu]}\int\frac{1}{(2\pi)^n\sqrt{|\boldsymbol\Sigma_s||\boldsymbol\Sigma_t|}}e^{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol\mu)^T(\boldsymbol\Sigma_s^{-1}+\boldsymbol\Sigma_t^{-1})(\boldsymbol{x}-\boldsymbol\mu)}d\boldsymbol{x}\\
+&amp;=
+\frac{1}{\sqrt{|\boldsymbol\Sigma_s+\boldsymbol\Sigma_t|}}e^{-\frac{1}{2}[\boldsymbol\mu_s^T\boldsymbol\Sigma_s^{-1}\boldsymbol\mu_s+\boldsymbol\mu_t^T\boldsymbol\Sigma_t^{-1}\boldsymbol\mu_t-\boldsymbol\mu^T(\boldsymbol\Sigma_s^{-1}+\boldsymbol\Sigma_t^{-1})\boldsymbol\mu]}
+\end{aligned}
+\]</span></p>
+<p>其中 <span
+class="math inline">\(\boldsymbol\mu=(\boldsymbol\Sigma_s^{-1}+\boldsymbol\Sigma_t^{-1})^{-1}(\boldsymbol\Sigma_s^{-1}\boldsymbol\mu_s+\boldsymbol\Sigma_t^{-1}\boldsymbol\mu_t)\)</span></p>
+<p>只考虑指数部分，上式最大，意味着下式最小 <span
+class="math display">\[
+\begin{aligned}
+&amp;\boldsymbol\mu_s^T\boldsymbol\Sigma_s^{-1}\boldsymbol\mu_s+\boldsymbol\mu_t^T\boldsymbol\Sigma_t^{-1}\boldsymbol\mu_t-\boldsymbol\mu^T(\boldsymbol\Sigma_s^{-1}+\boldsymbol\Sigma_t^{-1})\boldsymbol\mu\\
+&amp;=(\boldsymbol\mu_s-\boldsymbol\mu_t)^T(\boldsymbol\Sigma_s+\boldsymbol\Sigma_t)^{-1}(\boldsymbol\mu_s-\boldsymbol\mu_t  )
+\end{aligned}
+\]</span></p>
+<p>该距离被称为马氏距离（Mahalanobis Distance） 现在假设有 <span
+class="math inline">\(n\)</span> 个目标高斯点云 <span
+class="math inline">\(\mathcal{N}(\boldsymbol{x}|\boldsymbol\mu_{ti},\boldsymbol\Sigma_{ti}),i
+= 1,\cdots,n\)</span> <span class="math inline">\(n\)</span>
+个源高斯点云 <span
+class="math inline">\(\mathcal{N}(\boldsymbol{x}|\boldsymbol\mu_{si},\boldsymbol\Sigma_{si}),i
+= 1,\cdots,n\)</span></p>
+<p>那么总的距离为 <span class="math display">\[
+d(\boldsymbol{R},\boldsymbol{t})=\sum_i(\boldsymbol\mu_{si}-\boldsymbol\mu_{ti})^T(\boldsymbol\Sigma_{si}+\boldsymbol\Sigma_{ti})^{-1}(\boldsymbol\mu_{si}-\boldsymbol\mu_{ti})
+\]</span></p>
+<p>考虑到对点云做旋转平移 <span
+class="math inline">\(\boldsymbol{R},\boldsymbol{t}\)</span>
+之后其高斯函数会有如下改变 <span class="math display">\[
+\begin{aligned}
+\boldsymbol\mu&#39;&amp;=\boldsymbol{R}\boldsymbol\mu+\boldsymbol{t}\\
+\boldsymbol\Sigma&#39;&amp;=\boldsymbol{R}
+\boldsymbol\Sigma\boldsymbol{R}^T
+\end{aligned}
+\]</span></p>
+<p>点云配准就是在求解最优的 <span class="math inline">\(\boldsymbol
+R^*,\boldsymbol t^*\)</span> 使得满足如下的式子 <span
+class="math display">\[
+\min\quad
+d(\boldsymbol{R},\boldsymbol{t})=\sum_i(\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti})^T(\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T+\boldsymbol\Sigma_{ti})^{-1}(\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti})
+\]</span></p>
+<p>该方程的最优解在一般情况下无法通过解析表达式求解，需要通过非线性优化求解</p>
+<p>这里令 <span
+class="math inline">\(\boldsymbol{a}_i=(\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T+\boldsymbol\Sigma_{ti})^{-1}(\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti})\)</span>，并且直接给出结论，不再推导</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{t}\)</span> 的更新</li>
+</ul>
+<p>原优化函数对 <span class="math inline">\(\boldsymbol{t}\)</span>
+的导数为 <span class="math display">\[
+\frac{\partial d}{\partial\boldsymbol{t}}=2\sum_i\boldsymbol{a}_i
+\]</span></p>
+<p>原优化函数对 <span class="math inline">\(\boldsymbol{t}\)</span> 的
+Hessian 矩阵为 <span class="math display">\[
+\boldsymbol{H}_t=2\sum_i(\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T+\boldsymbol\Sigma_{ti})^{-1}
+\]</span></p>
+<p>采用 Gauss-Newton 法，其每次迭代的更新为 <span
+class="math display">\[
+\boldsymbol{t}\leftarrow\boldsymbol{t}-2\boldsymbol{H}_t^{-1}\sum_i\boldsymbol{a}_i
+\]</span></p>
+<p>采用 Levenberg-Marquard 算法，其每次迭代的更新为 <span
+class="math display">\[
+\boldsymbol{t}\leftarrow\boldsymbol{t}-(2\boldsymbol{H}_t+\lambda\boldsymbol{I})^{-1}\sum_i\boldsymbol{a}_i
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{R}\)</span> 的更新</li>
+</ul>
+<p>如果有一个较好的初值 <span
+class="math inline">\(\boldsymbol{R}_0\)</span>，在 <span
+class="math inline">\(\Delta\boldsymbol\omega\to\boldsymbol{0}\)</span>
+的情况下，有 <span
+class="math inline">\(\boldsymbol{R}\approx(\boldsymbol{I}+\Delta\boldsymbol\omega^\land)\boldsymbol{R}_0\)</span></p>
+<p>利用 <span class="math display">\[
+\frac{\partial\boldsymbol{B}\boldsymbol{a}_i}{\partial\boldsymbol\omega}=[(\boldsymbol{R}\boldsymbol\mu_{si}-\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T\boldsymbol{a}_i)^\land+\boldsymbol{a}_i^\land\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T](\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T+\boldsymbol\Sigma_{ti})^{-1}\boldsymbol{B}^T
+\]</span></p>
+<p>原优化函数对 <span class="math inline">\(\boldsymbol\omega\)</span>
+的导数为 <span class="math display">\[
+\frac{\partial d}{\partial\boldsymbol\omega}
+=
+2\sum_i(\boldsymbol{R}\boldsymbol\mu_{si}-\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T\boldsymbol{a}_i)^\land\boldsymbol{a}_i
+\]</span></p>
+<p>原优化函数对 <span class="math inline">\(\boldsymbol\omega\)</span>
+的 Hessian 矩阵近似为 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{H}_{\boldsymbol\omega}
+=&amp;
+2\sum_i[(\boldsymbol{R}\boldsymbol\mu_{si}-\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T\boldsymbol{a}_i)^\land+\boldsymbol{a}_i^\land\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T]\boldsymbol{a}_i^\land
++\\
+&amp;[(\boldsymbol{R}\boldsymbol\mu_{si}-\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T\boldsymbol{a}_i)^\land+\boldsymbol{a}_i^\land\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T](\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T+\boldsymbol\Sigma_{ti})^{-1}\\
+&amp;[(\boldsymbol{R}\boldsymbol\mu_{si}-\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T\boldsymbol{a}_i)^\land+\boldsymbol{a}_i^\land\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T]^T
+\end{aligned}
+\]</span></p>
+<p>如果令 <span
+class="math inline">\(\boldsymbol{A}_i=(\boldsymbol{R}\boldsymbol\mu_{si}-\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T\boldsymbol{a}_i)^\land+\boldsymbol{a}_i^\land\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T\)</span>，可以进一步简写成</p>
+<p><span class="math display">\[
+\boldsymbol{H}_{\boldsymbol\omega}
+= 2\sum_i\boldsymbol{A}_i\boldsymbol{a}_i^\land
++\boldsymbol{A}_i(\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T+\boldsymbol\Sigma_{ti})^{-1}\boldsymbol{A}_i^T
+\]</span></p>
+<p>采用 Gauss-Newton 法，其每次迭代的更新为 <span
+class="math display">\[
+\boldsymbol\omega\leftarrow\boldsymbol\omega-2\boldsymbol{H}_\omega^{-1}\sum_i(\boldsymbol{R}\boldsymbol\mu_{si}-\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T\boldsymbol{a}_i)^\land\boldsymbol{a}_i
+\]</span></p>
+<p>采用 Levenberg-Marquard 算法，其每次迭代的更新为 <span
+class="math display">\[
+\boldsymbol\omega\leftarrow\boldsymbol\omega-(2\boldsymbol{H}_\omega+\lambda\boldsymbol{I})^{-1}\sum_i(\boldsymbol{R}\boldsymbol\mu_{si}-\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T\boldsymbol{a}_i)^\land\boldsymbol{a}_i
+\]</span></p>
+<h3 id="简化后的迭代表达式">简化后的迭代表达式</h3>
+<p>如果 <span
+class="math inline">\(\boldsymbol{R},\boldsymbol{t}\)</span>
+有一个较好的初值，则有 <span
+class="math inline">\(\boldsymbol{a}_i=(\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T+\boldsymbol\Sigma_{ti})^{-1}(\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti})\to\boldsymbol{0}\)</span>，进一步有
+<span class="math display">\[
+\begin{aligned}
+\boldsymbol{A}_i&amp;=(\boldsymbol{R}\boldsymbol\mu_{si})^\land\\
+\boldsymbol{H}_t
+&amp;=2\sum_i(\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T+\boldsymbol\Sigma_{ti})^{-1}\\
+\boldsymbol{H}_{\boldsymbol\omega}
+&amp;=-2\sum_i
+(\boldsymbol{R}\boldsymbol\mu_{si})^\land(\boldsymbol{R}\boldsymbol\Sigma_{si}\boldsymbol{R}^T+\boldsymbol\Sigma_{ti})^{-1}(\boldsymbol{R}\boldsymbol\mu_{si})^\land
+\end{aligned}
+\]</span></p>
+<p>采用 Gauss-Newton 法，其每次迭代的更新为 <span
+class="math display">\[\begin{aligned}
+\boldsymbol{t}&amp;\leftarrow\boldsymbol{t}-2\boldsymbol{H}_t^{-1}\sum_i\boldsymbol{a}_i\\
+\boldsymbol\omega&amp;\leftarrow\boldsymbol\omega-2\boldsymbol{H}_\omega^{-1}\sum_i(\boldsymbol{R}\boldsymbol\mu_{si})^\land\boldsymbol{a}_i
+\end{aligned}\]</span></p>
+<p>采用 Levenberg-Marquard 算法，其每次迭代的更新为 <span
+class="math display">\[\begin{aligned}
+\boldsymbol{t}&amp;\leftarrow\boldsymbol{t}-2(\boldsymbol{H}_t+\lambda\boldsymbol{I})^{-1}\sum_i\boldsymbol{a}_i\\
+\boldsymbol\omega&amp;\leftarrow\boldsymbol\omega-2(\boldsymbol{H}_\omega+\lambda\boldsymbol{I})^{-1}\sum_i(\boldsymbol{R}\boldsymbol\mu_{si})^\land\boldsymbol{a}_i
+\end{aligned}\]</span></p>
+<h3 id="与-point-to-point-icp-的关系">与 Point-to-Point ICP 的关系</h3>
+<p>当 <span
+class="math inline">\(\boldsymbol\Sigma_{si}=\boldsymbol{0},\boldsymbol\Sigma_{ti}=\boldsymbol{I}\)</span>
+时，原优化问题将会变成 <span class="math display">\[
+\min\quad
+d(\boldsymbol{R},\boldsymbol{t})=\sum_i(\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti})^T(\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti})
+\]</span></p>
+<p>可以发现该问题和 Point-to-Point ICP 方程一致，<span
+class="math inline">\(\boldsymbol{a}_i,\boldsymbol{A}_i,\boldsymbol{H_t},\boldsymbol{H_\omega}\)</span>
+为 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{a}_i&amp;=\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti}\\
+\boldsymbol{A}_i&amp;=(\boldsymbol{R}\boldsymbol\mu_{si})^\land\\
+\boldsymbol{H_t}&amp;=2n\boldsymbol{I}\\
+\boldsymbol{H}_{\boldsymbol\omega}
+&amp;=
+2\sum_i(\boldsymbol{R}\boldsymbol\mu_{si})^\land\boldsymbol{a}_i^\land
+-(\boldsymbol{R}\boldsymbol\mu_{si})^\land
+(\boldsymbol{R}\boldsymbol\mu_{si})^\land\\
+&amp;=
+2\sum_i(\boldsymbol{R}\boldsymbol\mu_{si})^\land
+(\boldsymbol{t}-\boldsymbol\mu_{ti})^\land
+\approx
+-2\sum_i(\boldsymbol{R}\boldsymbol\mu_{si})^\land
+(\boldsymbol{R}\boldsymbol\mu_{si})^\land
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(\boldsymbol{t},\boldsymbol{R}\)</span>
+的迭代方程为 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{t}&amp;\leftarrow\boldsymbol{t}-\frac{1}{n}\sum_i\boldsymbol{a}_i\\
+\boldsymbol\omega&amp;\leftarrow\boldsymbol\omega-
+\bigg(-\sum_i
+(\boldsymbol{R}\boldsymbol\mu_{si})^\land
+(\boldsymbol{R}\boldsymbol\mu_{si})^\land\bigg)^{-1}\sum_i(\boldsymbol{R}\boldsymbol\mu_{si})^\land\boldsymbol{a}_i
+\end{aligned}
+\]</span></p>
+<h3 id="与-point-to-plane-icp-的关系">与 Point-to-Plane ICP 的关系</h3>
+<p>当 <span
+class="math inline">\(\boldsymbol\Sigma_{si}=\boldsymbol{0},\boldsymbol\Sigma_{ti}=(\boldsymbol{n}_i\boldsymbol{n}_i^T)^{-1}\)</span>
+时，原优化问题将会变成 <span class="math display">\[
+\min\quad
+d(\boldsymbol{R},\boldsymbol{t})=\sum_i(\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti})^T\boldsymbol{n}_i\boldsymbol{n}_i^T(\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti})
+\]</span></p>
+<p>可以发现该问题和 Point-to-Plane ICP 方程一致， <span
+class="math display">\[
+\begin{aligned}
+\boldsymbol{a}_i&amp;=\boldsymbol{n}_i\boldsymbol{n}_i^T(\boldsymbol{R}\boldsymbol\mu_{si}+\boldsymbol{t}-\boldsymbol\mu_{ti})\\
+\boldsymbol{A}_i&amp;=(\boldsymbol{R}\boldsymbol\mu_{si})^\land\\
+\boldsymbol{H_t}&amp;=2\sum_i\boldsymbol{n}_i\boldsymbol{n}_i^T\\
+\boldsymbol{H}_{\boldsymbol\omega}
+&amp;=
+2\sum_i(\boldsymbol{R}\boldsymbol\mu_{si})^\land\boldsymbol{a}_i^\land
+-(\boldsymbol{R}\boldsymbol\mu_{si})^\land\boldsymbol{n}_i\boldsymbol{n}_i^T(\boldsymbol{R}\boldsymbol\mu_{si})^\land\\
+&amp;\approx
+-2\sum_i(\boldsymbol{R}\boldsymbol\mu_{si})^\land\boldsymbol{n}_i\boldsymbol{n}_i^T(\boldsymbol{R}\boldsymbol\mu_{si})^\land
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(\boldsymbol{t},\boldsymbol{R}\)</span>
+的迭代方程为 <span class="math display">\[
+\begin{aligned}
+\boldsymbol{t}&amp;\leftarrow\boldsymbol{t}-\bigg(\sum_i\boldsymbol{n}_i\boldsymbol{n}_i^T\bigg)^{-1}\sum_i\boldsymbol{a}_i=\bigg(\sum_i\boldsymbol{n}_i\boldsymbol{n}_i^T\bigg)^{-1}\sum_i\boldsymbol{n}_i\boldsymbol{n}_i^T(\boldsymbol\mu_{ti}-\boldsymbol{R}\boldsymbol\mu_{si})\\
+\boldsymbol\omega&amp;\leftarrow\boldsymbol\omega-\bigg(-\sum_i
+(\boldsymbol{R}\boldsymbol\mu_{si})^\land\boldsymbol{n}_i\boldsymbol{n}_i^T(\boldsymbol{R}\boldsymbol\mu_{si})^\land\bigg)^{-1}\sum_i(\boldsymbol{R}\boldsymbol\mu_{si})^\land\boldsymbol{a}_i
+\end{aligned}
+\]</span></p>
 
     </div>
 
