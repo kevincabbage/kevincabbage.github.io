@@ -21,26 +21,26 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"kevincabbage.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一些神经网络半监督论文的总结">
+    <meta name="description" content="python调用FFmpeg的常用函数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="半监督学习（Semi Supervised Learning）">
-<meta property="og:url" content="http://kevincabbage.github.io/2023/07/04/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:title" content="FFmpeg相关函数">
+<meta property="og:url" content="http://kevincabbage.github.io/2023/09/17/FFmpeg%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="大白菜的博客">
-<meta property="og:description" content="一些神经网络半监督论文的总结">
+<meta property="og:description" content="python调用FFmpeg的常用函数">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-07-04T02:44:08.000Z">
-<meta property="article:modified_time" content="2023-07-04T03:15:50.727Z">
+<meta property="article:published_time" content="2023-09-17T15:51:02.000Z">
+<meta property="article:modified_time" content="2023-09-17T15:52:41.615Z">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://kevincabbage.github.io/2023/07/04/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">
+<link rel="canonical" href="http://kevincabbage.github.io/2023/09/17/FFmpeg%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://kevincabbage.github.io/2023/07/04/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/","path":"2023/07/04/半监督学习/","title":"半监督学习（Semi Supervised Learning）"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://kevincabbage.github.io/2023/09/17/FFmpeg%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0/","path":"2023/09/17/FFmpeg相关函数/","title":"FFmpeg相关函数"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>半监督学习（Semi Supervised Learning） | 大白菜的博客</title>
+<title>FFmpeg相关函数 | 大白菜的博客</title>
   
 
 
@@ -99,7 +99,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -112,14 +112,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#pseudo-label-the-simple-and-efficient-semi-supervised-learning-method-for-deep-neural-networks-icml-2013"><span class="nav-number">1.</span> <span class="nav-text">Pseudo-Label
-: The Simple and Efficient Semi-Supervised Learning Method for Deep
-Neural Networks (ICML 2013)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#semi-supervised-learning-with-ladder-networks-nips-2015"><span class="nav-number">2.</span> <span class="nav-text">Semi-Supervised Learning with
-Ladder Networks (NIPS 2015)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mean-teachers-are-better-role-models-weight-averaged-consistency-targets-improve-semi-supervised-deep-learning-results-nips-2017"><span class="nav-number">3.</span> <span class="nav-text">Mean teachers are better role
-models: Weight-averaged consistency targets improve semi-supervised deep
-learning results (NIPS 2017)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#temporal-ensembling-for-semi-supervised-learning-iclr-2017"><span class="nav-number">4.</span> <span class="nav-text">Temporal Ensembling for
-Semi-supervised Learning (ICLR 2017)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unsupervised-data-augmentation-for-consistency-training"><span class="nav-number">5.</span> <span class="nav-text">Unsupervised Data Augmentation
-for Consistency Training</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -160,7 +152,7 @@ for Consistency Training</span></a></li></ol></div>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://kevincabbage.github.io/2023/07/04/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="http://kevincabbage.github.io/2023/09/17/FFmpeg%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -173,12 +165,12 @@ for Consistency Training</span></a></li></ol></div>
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="半监督学习（Semi Supervised Learning） | 大白菜的博客">
-      <meta itemprop="description" content="一些神经网络半监督论文的总结">
+      <meta itemprop="name" content="FFmpeg相关函数 | 大白菜的博客">
+      <meta itemprop="description" content="python调用FFmpeg的常用函数">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          半监督学习（Semi Supervised Learning）
+          FFmpeg相关函数
         </h1>
 
         <div class="post-meta-container">
@@ -190,7 +182,7 @@ for Consistency Training</span></a></li></ol></div>
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-07-04 10:44:08 / 修改时间：11:15:50" itemprop="dateCreated datePublished" datetime="2023-07-04T10:44:08+08:00">2023-07-04</time>
+      <time title="创建时间：2023-09-17 23:51:02 / 修改时间：23:52:41" itemprop="dateCreated datePublished" datetime="2023-09-17T23:51:02+08:00">2023-09-17</time>
     </span>
 
   
@@ -203,47 +195,17 @@ for Consistency Training</span></a></li></ol></div>
     </span>
 </div>
 
-            <div class="post-description">一些神经网络半监督论文的总结</div>
+            <div class="post-description">python调用FFmpeg的常用函数</div>
         </div>
       </header>
 
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>最近对半监督学习很感兴趣，尤其是关于半监督学习在卷积神经网络中的应用。这里首先列出相关的文献，后面继续补充对于每一篇文献的介绍以及使用效果。</p>
-<h4
-id="pseudo-label-the-simple-and-efficient-semi-supervised-learning-method-for-deep-neural-networks-icml-2013"><a
-target="_blank" rel="noopener" href="http://deeplearning.net/wp-content/uploads/2013/03/pseudo_label_final.pdf">Pseudo-Label
-: The Simple and Efficient Semi-Supervised Learning Method for Deep
-Neural Networks (ICML 2013)</a></h4>
-<p>核心思想：通过网络对无标签数据进行预测，然后将预测结果进行锐化，得到伪标签（Pseudo-Label
-）。这里采用的锐化方法是一种极端的锐化方式——将预测结果最大概率位置置为1，其余地方置为0（相当于对向量求无穷范数）。最后将锐化后的伪标签和无标签数据组成新数据对加入训练。考虑到开始的网络预测结果可能不准确（置信度低），因此无标签数据对在误差函数中对应的权重比较低，随着训练epoch增加权重逐渐增加。</p>
-<h4 id="semi-supervised-learning-with-ladder-networks-nips-2015"><a
-target="_blank" rel="noopener" href="https://arxiv.org/abs/1507.02672">Semi-Supervised Learning with
-Ladder Networks (NIPS 2015)</a></h4>
-<p>核心思想：无监督方法开始的时候都采用在无标签数据上进行
-Auto-Encoder预训练，然后在有标签数据上进行监督训练。这种方式效果不好的原因在于无监督的预训练其根本目的在于最大限度地保留所有特征用于恢复自身，而为了完成某种任务的监督训练所需要的信息可能只是其中一部分，一种更加高明的方式应该是最大限度保留所有该任务需要的特征而不是所有特征。为此论文设计了一种形状像梯子一样的网络结构，在编码解码恢复自身的特征只有一部分用于监督训练。</p>
-<h4
-id="mean-teachers-are-better-role-models-weight-averaged-consistency-targets-improve-semi-supervised-deep-learning-results-nips-2017"><a
-target="_blank" rel="noopener" href="https://arxiv.org/abs/1703.01780">Mean teachers are better role
-models: Weight-averaged consistency targets improve semi-supervised deep
-learning results (NIPS 2017)</a></h4>
-<h4 id="temporal-ensembling-for-semi-supervised-learning-iclr-2017"><a
-target="_blank" rel="noopener" href="https://arxiv.org/pdf/1610.02242">Temporal Ensembling for
-Semi-supervised Learning (ICLR 2017)</a></h4>
-<p>核心思想：通过各种随机扰动（在图片里面就是crop、rotate、flip、亮度变换等），或者是它们的综合体
-<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1905.02249">MixMatch: A Holistic Approach
-to Semi-Supervised
-Learning</a>，使得没有标签的图像通过网络之后得到的target尽可能一致（从变化中找到不变量），以此来作为约束或者正则项。由于这样的做法在训练过程中形成了一个闭环，可以将这样的约束写成loss的形式，训练起来也很方便。但是显然这样的方法太过于随机，找到的随机扰动可能不是问题的痛点，因此
-<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1704.03976">Virtual Adversarial Training:
-A Regularization Method for Supervised and Semi-Supervised Learning
-(TPAMI)</a>
-采用对抗生成的方法，用一个网络去寻找无标签数据的痛点，相对于前面的随机扰动来说，通过网络生成的随机扰动更加具有针对性，约束也更强。</p>
-<h4 id="unsupervised-data-augmentation-for-consistency-training"><a
-target="_blank" rel="noopener" href="https://arxiv.org/pdf/1904.12848">Unsupervised Data Augmentation
-for Consistency Training</a></h4>
-<p>核心思想：google的文章，基本上将前面的方法进行了概括</p>
-<p>总结：虽然论文结果说得天花乱坠，但是一到实际场景好像就不行，比如自己随便造一个数据集，可能就有问题。论文里经常用这么几个数据集minist、cifar10、cifar100等，那其他数据集呢？为什么不使用下呢？所以这本身也说明了一个问题，就是半监督学习可能需要一定的假设才能成功（说白了就这几个数据集才有效）。如果有一天，当大家在kaggle比赛中都争先恐后地采用这种半监督方法的时候，那就是半监督真正大放异彩的时候。</p>
+    <div class="post-body" itemprop="articleBody"><p>FFmpeg 是常用的视频处理开源软件，C++ 的相关函数比较丰富，但是 python
+相关的内容就相对较少，这里特此记录，当然也可以查看<a
+target="_blank" rel="noopener" href="https://github.com/kkroening/ffmpeg-python">网页</a>学习</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ffmpeg</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 内存数据</span></span><br><span class="line">data_bytes  = <span class="string">b&#x27;\x00\x00\x00\x01\x4e\x01...\x00\x00\x00\x01\x26\x01...&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 内存输入</span></span><br><span class="line">stream      = ffmpeg.<span class="built_in">input</span>(<span class="string">&#x27;pipe:&#x27;</span>)</span><br><span class="line">stream      = ffmpeg.<span class="built_in">input</span>(<span class="string">&#x27;pipe:&#x27;</span>, <span class="built_in">format</span> = <span class="string">&#x27;hevc&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 图片输入</span></span><br><span class="line">stream = ffmpeg.<span class="built_in">input</span>(input_path + <span class="string">&#x27;//%03d.png&#x27;</span>, framerate = <span class="number">20</span>)</span><br><span class="line">stream = ffmpeg.<span class="built_in">input</span>(output_path + <span class="string">&#x27;//*.png&#x27;</span>, pattern_type=<span class="string">&#x27;glob&#x27;</span>, framerate = <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># yuv输入</span></span><br><span class="line">stream      = ffmpeg.<span class="built_in">input</span>(<span class="string">&#x27;pipe:&#x27;</span>, <span class="built_in">format</span> = <span class="string">&#x27;rawvideo&#x27;</span>, pix_fmt = <span class="string">&#x27;yuv420p&#x27;</span>, s = <span class="built_in">str</span>(<span class="number">2880</span>) + <span class="string">&#x27;x&#x27;</span> + <span class="built_in">str</span>(<span class="number">1860</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取 0 - 100 帧</span></span><br><span class="line">stream      = ffmpeg.trim(stream, start_frame = <span class="number">0</span>, end_frame = <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取第 n 帧, 配合 vframes = 1 使用</span></span><br><span class="line">stream      = ffmpeg.<span class="built_in">filter</span>(stream, <span class="string">&#x27;select&#x27;</span>, <span class="string">&#x27;gte(n, &#123;&#125;)&#x27;</span>.<span class="built_in">format</span>(n))</span><br><span class="line"><span class="comment"># stream      = ffmpeg.output(stream, &#x27;pipe:&#x27;, format = &#x27;rawvideo&#x27;, pix_fmt = &#x27;rgb24&#x27;, vframes = 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出到 numpy</span></span><br><span class="line">stream      = ffmpeg.output(stream, <span class="string">&#x27;pipe:&#x27;</span>, <span class="built_in">format</span> = <span class="string">&#x27;rawvideo&#x27;</span>, pix_fmt = <span class="string">&#x27;rgb24&#x27;</span>)</span><br><span class="line"></span><br><span class="line">images, _   = ffmpeg.run(stream, <span class="built_in">input</span> = data_bytes, quiet = <span class="literal">True</span>)</span><br><span class="line">images      = np.frombuffer(images, dtype = <span class="string">&#x27;u1&#x27;</span>).reshape(-<span class="number">1</span>, image_height, image_width, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出成图片文件</span></span><br><span class="line">output_file = <span class="string">&#x27;_%04d.png&#x27;</span></span><br><span class="line">stream      = ffmpeg.output(stream, output_file, pix_fmt = <span class="string">&#x27;rgba&#x27;</span>)</span><br><span class="line">ffmpeg.run(stream, <span class="built_in">input</span> = data_bytes, overwrite_output = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出成视频文件</span></span><br><span class="line">crf         = <span class="number">30</span>            <span class="comment"># video quality</span></span><br><span class="line">qp          = <span class="number">30</span>            <span class="comment"># Quantization Parameter</span></span><br><span class="line">bf          = <span class="number">0</span>             <span class="comment"># B frame num</span></span><br><span class="line">g           = <span class="number">30</span>            <span class="comment"># GOP size</span></span><br><span class="line">vcodec      = <span class="string">&#x27;libx265&#x27;</span></span><br><span class="line">pix_fmt     = <span class="string">&#x27;yuv420p&#x27;</span></span><br><span class="line"></span><br><span class="line">output_file = <span class="string">&#x27;**.mp4&#x27;</span></span><br><span class="line">stream      = ffmpeg.output(stream, output_file, vcodec = vcodec, crf = crf, pix_fmt = pix_fmt, bf = bf, g = g)</span><br><span class="line">ffmpeg.run(stream, <span class="built_in">input</span> = data_bytes, overwrite_output = <span class="literal">True</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -257,14 +219,11 @@ for Consistency Training</a></h4>
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/07/03/%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2/" rel="prev" title="图像滤波（Image Denoising）">
-                  <i class="fa fa-chevron-left"></i> 图像滤波（Image Denoising）
+                <a href="/2023/09/17/%E4%BD%8D%E5%A7%BF%E7%9A%84%E8%A1%A8%E8%BE%BE%E6%96%B9%E5%BC%8F/" rel="prev" title="位姿的表达方式">
+                  <i class="fa fa-chevron-left"></i> 位姿的表达方式
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/07/04/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%B5%E8%84%91%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%AE%89%E8%A3%85/" rel="next" title="深度学习电脑配置及安装">
-                  深度学习电脑配置及安装 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
